@@ -9,11 +9,9 @@ def loginbook(request):
 def indexbook(request):
     return render(request,'main.html')
 
-
 #图书归还
 def returnbook(request):
     return render(request,'bookBack.html')
-
 
 #图书借阅
 def borrowingbook(request):
