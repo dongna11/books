@@ -7,7 +7,7 @@ def loginbook(request):
 
 #首页
 def indexbook(request):
-    return render(request,'main.html.html')
+    return render(request,'main.html')
 
 
 #图书归还
