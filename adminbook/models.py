@@ -65,7 +65,6 @@ class THouse(models.Model):
     class Meta:
         managed = False
         db_table = 't_house'
-
 #图书馆信息表
 class TLibrary(models.Model):
     id = models.IntegerField(primary_key=True)
