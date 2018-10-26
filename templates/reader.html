@@ -101,30 +101,20 @@
     <td width="5%" bgcolor="#F9D16B">修改</td>
     <td width="5%" bgcolor="#F9D16B">删除</td>
   </tr>
- 
+  {% for reader in readers %}
   <tr>
-    <td style="padding:5px;">2008010100001</td>  
-    <td style="padding:5px;"><a href="reader.do?action=readerDetail&ID=1">wgh</a></td>
-    <td style="padding:5px;">学生</td>
-    <td align="center">身份证</td>
-    <td align="center">2201041980********</td>
-    <td align="center">13634*******</td>
-    <td align="center">wgh717@****.com</td>
+    <td style="padding:5px;">{{ reader.id }}</td>
+    <td style="padding:5px;"><a href="reader.do?action=readerDetail&ID=1">{{ reader.rname }}</a></td>
+    <td style="padding:5px;">{{ reader.rtype.rttype }}</td>
+    <td align="center">{{ reader.rcardtype }}</td>
+    <td align="center">{{ reader.rcardnum }}</td>
+    <td align="center">{{ reader.rtel }}</td>
+    <td align="center">{{ reader.remail }}</td>
     <td align="center"><a href="reader.do?action=readerModifyQuery&ID=1">修改</a></td>
     <td align="center"><a href="reader.do?action=readerDel&ID=1">删除</a></td>
   </tr>
- 
-  <tr>
-    <td style="padding:5px;">123123123</td>  
-    <td style="padding:5px;"><a href="reader.do?action=readerDetail&ID=2">的</a></td>
-    <td style="padding:5px;">教师</td>
-    <td align="center">身份证</td>
-    <td align="center">220</td>
-    <td align="center">&nbsp;</td>
-    <td align="center">&nbsp;</td>
-    <td align="center"><a href="reader.do?action=readerModifyQuery&ID=2">修改</a></td>
-    <td align="center"><a href="reader.do?action=readerDel&ID=2">删除</a></td>
-  </tr>
+ {% endfor %}
+
   
 </table></td>
       </tr>
