@@ -82,7 +82,9 @@ DATABASES = {
         'HOST': '192.168.2.122',
         'PORT': '3306',
         'USER': 'root',
-        'PASSWORD': 'Guyifeng531'
+        'PASSWORD': 'Guyifeng531',
+        'OPTIONS':{'isolation_level':None}
+
     }
 }
 
