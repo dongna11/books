@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block main %}
+<tr>
+                                <td height="22" valign="top" class="word_orange">当前位置：图书管理 &gt; 图书档案管理 &gt;&gt;&gt;</td>
+                            </tr>
+                            <tr>
+                                <td align="center" valign="top">
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td width="87%">&nbsp;</td>
+                                            <td width="13%">
+                                                <a href="book_add.jsp">添加图书信息</a></td>
+                                        </tr>
+                                    </table>
+                                    <table width="98%" border="1" cellpadding="0" cellspacing="0" bordercolor="#FFFFFF"
+                                           bordercolordark="#F6B83B" bordercolorlight="#FFFFFF">
+                                        <tr align="center" bgcolor="#e3F4F7">
+                                            <td width="13%" bgcolor="#F9D16B">条形码</td>
+                                            <td width="26%" bgcolor="#F9D16B">图书名称</td>
+                                            <td width="15%" bgcolor="#F9D16B">图书类型</td>
+                                            <td width="14%" bgcolor="#F9D16B">出版社</td>
+                                            <td width="12%" bgcolor="#F9D16B">书架</td>
+                                            <td width="9%" bgcolor="#F9D16B">修改</td>
+                                            <td width="5%" bgcolor="#F9D16B">删除</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="padding:5px;">&nbsp;9787302047230</td>
+                                            <td style="padding:5px;"><a
+                                                    href="book.do?action=bookDetail&ID=1">Java学习指南</a></td>
+                                            <td style="padding:5px;">&nbsp;计算机类</td>
+                                            <td style="padding:5px;">&nbsp;电子工业出版社</td>
+                                            <td style="padding:5px;">&nbsp;A架</td>
+
+                                            <td align="center"><a href="book.do?action=bookModifyQuery&ID=1">修改</a></td>
+                                            <td align="center"><a href="book.do?action=bookDel&ID=1">删除</a></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="padding:5px;">&nbsp;001</td>
+                                            <td style="padding:5px;"><a href="book.do?action=bookDetail&ID=6">建筑测试</a>
+                                            </td>
+                                            <td style="padding:5px;">&nbsp;建筑类sssssssss</td>
+                                            <td style="padding:5px;">&nbsp;电子工业出版社</td>
+                                            <td style="padding:5px;">&nbsp;B架</td>
+
+                                            <td align="center"><a href="book.do?action=bookModifyQuery&ID=6">修改</a></td>
+                                            <td align="center"><a href="book.do?action=bookDel&ID=6">删除</a></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="padding:5px;">&nbsp;9787115157690</td>
+                                            <td style="padding:5px;"><a href="book.do?action=bookDetail&ID=3">JSP啊</a>
+                                            </td>
+                                            <td style="padding:5px;">&nbsp;计算机类</td>
+                                            <td style="padding:5px;">&nbsp;清华大学出版社</td>
+                                            <td style="padding:5px;">&nbsp;A架</td>
+
+                                            <td align="center"><a href="book.do?action=bookModifyQuery&ID=3">修改</a></td>
+                                            <td align="center"><a href="book.do?action=bookDel&ID=3">删除</a></td>
+                                        </tr>
+
+                                    </table>
+                                </td>
+                            </tr>
+{% endblock %}
