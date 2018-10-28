@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 #登陆界面
-from adminbook.models import TReader
+from adminbook.models import *
 
 
 def loginbook(request):
@@ -82,4 +82,5 @@ def managementbook(request):
 
 #读者类型管理
 def typemanagementbook(request):
-    return render(request,'readerType.html')
+    readertypes=TReadertype.objects.all()
+    return render(request,'readerType.html',{'readertypes':readertypes})
