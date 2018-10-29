@@ -184,7 +184,7 @@ def addreader(request):
         remail=request.POST.get('remail','')
         rtypename=TReadertype.objects.get(rttype=rtype).id
         # print(rname,rtype,rcardtype,rcardnum,rtel,remail)
-        sb=TReader.objects.create(rname=rname,rtype=TReadertype.objects.get(rttype=rtype),rcardtype=rcardtype,rcardnum=rcardnum,remail=remail,rtel=rtel)
+        sb=TReader.objects.create(rname=rname,rtype=TReadertype.objects.get(rttype=rtype),rcardtype=rcardtype,rcardnum=rcardnum,remail=remail,rtel=rtel,rdelete=0)
         return HttpResponse('注册成功')
 
 
@@ -216,7 +216,7 @@ def changereader(request):
         remail=request.POST.get('remail','')
         rtypename=TReadertype.objects.get(rttype=rtype).id
         # print(rname,rtype,rcardtype,rcardnum,rtel,remail)
-        sb=TReader.objects.filter(id=readerid).update(rname=rname,rtype=TReadertype.objects.get(rttype=rtype),rcardtype=rcardtype,rcardnum=rcardnum,remail=remail,rtel=rtel)
+        sb=TReader.objects.filter(id=readerid).update(rname=rname,rtype=TReadertype.objects.get(rttype=rtype),rcardtype=rcardtype,rcardnum=rcardnum,remail=remail,rtel=rtel,rdelete=0)
         return HttpResponse('修改成功')
 
 def changereadertype(request):
