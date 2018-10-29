@@ -79,10 +79,10 @@ DATABASES = {
     'default': {
         'ENGINE':'django.db.backends.mysql',
         'NAME': 'book',
-        'HOST': '192.168.2.122',
+        'HOST': '127.0.0.1',
         'PORT': '3306',
         'USER': 'root',
-        'PASSWORD': 'Guyifeng531',
+        'PASSWORD': 'root',
         'OPTIONS':{'isolation_level':None}
 
     }
