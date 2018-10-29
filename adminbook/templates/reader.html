@@ -29,20 +29,22 @@
                                             <td width="5%" bgcolor="#F9D16B">删除</td>
                                         </tr>
                                         {% for reader in readers %}
-                                            <tr>
-                                                <td style="padding:5px;">{{ reader.id }}</td>
-                                                <td style="padding:5px;"><a
-                                                        href="reader.do?action=readerDetail&ID={{ reader.id }}">{{ reader.rname }}</a>
-                                                </td>
-                                                <td style="padding:5px;">{{ reader.rtype.rttype }}</td>
-                                                <td align="center">{{ reader.rcardtype }}</td>
-                                                <td align="center">{{ reader.rcardnum }}</td>
-                                                <td align="center">{{ reader.rtel }}</td>
-                                                <td align="center">{{ reader.remail }}</td>
-                                                <td align="center"><a
-                                                        href="reader.do?action=readerModifyQuery&ID={{ reader.id }}">修改</a></td>
-                                                <td align="center"><a href="reader.do?action=readerDel&ID={{ reader.id }}">删除</a></td>
-                                            </tr>
+                                            {% if reader.rdelete == 0 %}
+                                                <tr>
+                                                    <td style="padding:5px;">{{ reader.id }}</td>
+                                                    <td style="padding:5px;"><a
+                                                            href="reader.do?action=readerDetail&ID={{ reader.id }}">{{ reader.rname }}</a>
+                                                    </td>
+                                                    <td style="padding:5px;">{{ reader.rtype.rttype }}</td>
+                                                    <td align="center">{{ reader.rcardtype }}</td>
+                                                    <td align="center">{{ reader.rcardnum }}</td>
+                                                    <td align="center">{{ reader.rtel }}</td>
+                                                    <td align="center">{{ reader.remail }}</td>
+                                                    <td align="center"><a
+                                                            href="/index/changereader/?ID={{ reader.id }}">修改</a></td>
+                                                    <td align="center"><a href="/index/managements/?action=0&ID={{ reader.id }}">删除</a></td>
+                                                </tr>
+                                            {% endif %}
                                         {% endfor %}
 
 
