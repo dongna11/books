@@ -19,4 +19,5 @@ urlpatterns = [
     url(r'^changepwds/',views.changepwdbook),
     url(r'^managements/', views.managementbook),
     url(r'^typemanagements/', views.typemanagementbook),
+    url(r'^addreader/',views.addreader)
 ]

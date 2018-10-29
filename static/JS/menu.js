@@ -1,5 +1,5 @@
-var menuOffX=0	//²Ëµ¥¾àÁ¬½ÓÎÄ×Ö×î×ó¶Ë¾àÀë
-var menuOffY=18	//²Ëµ¥¾àÁ¬½ÓÎÄ×Ö¶¥¶Ë¾àÀë
+var menuOffX=0	//èœå•è·è¿æ¥æ–‡å­—æœ€å·¦ç«¯è·ç¦»
+var menuOffY=18	//èœå•è·è¿æ¥æ–‡å­—é¡¶ç«¯è·ç¦»
 var fo_shadows=new Array()
 var linkset=new Array()
 var ie4=document.all&&navigator.userAgent.indexOf("Opera")==-1
@@ -16,7 +16,7 @@ function showmenu(e,vmenu,mod){
 	ie_clearshadow()
 	menuobj=ie4? document.all.popmenu : ns6? document.getElementById("popmenu") : ns4? document.popmenu : ""
 	menuobj.thestyle=(ie4||ns6)? menuobj.style : menuobj
-	
+
 	if (ie4||ns6)
 		menuobj.innerHTML=which
 	else{
@@ -25,17 +25,17 @@ function showmenu(e,vmenu,mod){
 	}
 	menuobj.contentwidth=(ie4||ns6)? menuobj.offsetWidth : menuobj.document.gui.document.width
 	menuobj.contentheight=(ie4||ns6)? menuobj.offsetHeight : menuobj.document.gui.document.height
-	
+
 	eventX=ie4? event.clientX : ns6? e.clientX : e.x
 	eventY=ie4? event.clientY : ns6? e.clientY : e.y
-	
+
 	var rightedge=ie4? document.body.clientWidth-eventX : window.innerWidth-eventX
 	var bottomedge=ie4? document.body.clientHeight-eventY : window.innerHeight-eventY
 		if (rightedge<menuobj.contentwidth)
 			menuobj.thestyle.left=ie4? document.body.scrollLeft+eventX-menuobj.contentwidth+menuOffX : ns6? window.pageXOffset+eventX-menuobj.contentwidth : eventX-menuobj.contentwidth
 		else
 			menuobj.thestyle.left=ie4? ie_x(event.srcElement)+menuOffX : ns6? window.pageXOffset+eventX : eventX
-		
+
 		if (bottomedge<menuobj.contentheight&&mod!=0)
 			menuobj.thestyle.top=ie4? document.body.scrollTop+eventY-menuobj.contentheight-event.offsetY+menuOffY-23 : ns6? window.pageYOffset+eventY-menuobj.contentheight-10 : eventY-menuobj.contentheight
 		else
@@ -45,20 +45,20 @@ function showmenu(e,vmenu,mod){
 	return false
 }
 
-function ie_y(e){  
-	var t=e.offsetTop;  
-	while(e=e.offsetParent){  
-		t+=e.offsetTop;  
-	}  
-	return t;  
-}  
-function ie_x(e){  
-	var l=e.offsetLeft;  
-	while(e=e.offsetParent){  
-		l+=e.offsetLeft;  
-	}  
-	return l;  
-}  
+function ie_y(e){
+	var t=e.offsetTop;
+	while(e=e.offsetParent){
+		t+=e.offsetTop;
+	}
+	return t;
+}
+function ie_x(e){
+	var l=e.offsetLeft;
+	while(e=e.offsetParent){
+		l+=e.offsetLeft;
+	}
+	return l;
+}
 function ie_dropshadow(el, color, size)
 {
 	var i;
@@ -173,22 +173,22 @@ function outbg(tdbg){
 tdbg.style.background='url(.Images/item_out.gif)'
 tdbg.style.border=''
 }
-var sysmenu='<table width=80><tr><td id=library onMouseOver=overbg(library) onMouseOut=outbg(library)><a href="library_modify.html">Í¼Êé¹İĞÅÏ¢</a></td></tr>\
-<tr><td id=manager onMouseOver=overbg(manager) onMouseOut=outbg(manager)><a href="manager.html">¹ÜÀíÔ±ÉèÖÃ</a></td></tr>\
-<tr><td id=para onMouseOver=overbg(para) onMouseOut=outbg(para)><a href="parameter_modify.html">²ÎÊıÉèÖÃ</a></td></tr>\
-<tr><td id=bookcase onMouseOver=overbg(bookcase) onMouseOut=outbg(bookcase)><a href="bookcase.html">Êé¼ÜÉèÖÃ</a></td></tr>\
+var sysmenu='<table width=80><tr><td id=library onMouseOver=overbg(library) onMouseOut=outbg(library)><a href="library_modify.html">å›¾ä¹¦é¦†ä¿¡æ¯</a></td></tr>\
+<tr><td id=manager onMouseOver=overbg(manager) onMouseOut=outbg(manager)><a href="manager.html">ç®¡ç†å‘˜è®¾ç½®</a></td></tr>\
+<tr><td id=para onMouseOver=overbg(para) onMouseOut=outbg(para)><a href="parameter_modify.html">å‚æ•°è®¾ç½®</a></td></tr>\
+<tr><td id=bookcase onMouseOver=overbg(bookcase) onMouseOut=outbg(bookcase)><a href="bookcase.html">ä¹¦æ¶è®¾ç½®</a></td></tr>\
 </table>'
-var readermenu='<table width=90><tr><td id=readerType onMouseOver=overbg(readerType) onMouseOut=outbg(readerType)><a href="readerType.html">¶ÁÕßÀàĞÍ¹ÜÀí</a></td></tr>\
-<tr><td id=reader onMouseOver=overbg(reader) onMouseOut=outbg(reader)><a href="reader.html">¶ÁÕßµµ°¸¹ÜÀí</a></td></tr>\
+var readermenu='<table width=90><tr><td id=readerType onMouseOver=overbg(readerType) onMouseOut=outbg(readerType)><a href="readerType.html">è¯»è€…ç±»å‹ç®¡ç†</a></td></tr>\
+<tr><td id=reader onMouseOver=overbg(reader) onMouseOut=outbg(reader)><a href="reader.html">è¯»è€…æ¡£æ¡ˆç®¡ç†</a></td></tr>\
 </table>'
-var bookmenu='<table width=90><tr><td id=bookType onMouseOver=overbg(bookType) onMouseOut=outbg(bookType)><a href="bookType.html">Í¼ÊéÀàĞÍÉèÖÃ</a></td></tr>\
-<tr><td id=book onMouseOver=overbg(book) onMouseOut=outbg(book)><a href="book.html">Í¼Êéµµ°¸¹ÜÀí</a></td></tr>\
+var bookmenu='<table width=90><tr><td id=bookType onMouseOver=overbg(bookType) onMouseOut=outbg(bookType)><a href="bookType.html">å›¾ä¹¦ç±»å‹è®¾ç½®</a></td></tr>\
+<tr><td id=book onMouseOver=overbg(book) onMouseOut=outbg(book)><a href="book.html">å›¾ä¹¦æ¡£æ¡ˆç®¡ç†</a></td></tr>\
 </table>'
-var borrowmenu='<table width=60><tr><td id=Borrow onMouseOver=overbg(Borrow) onMouseOut=outbg(Borrow)><a href="bookBorrow.html">Í¼Êé½èÔÄ</a></td></tr>\
-<tr><td id=renew onMouseOver=overbg(renew) onMouseOut=outbg(renew)><a href=bookRenew.html>Í¼ÊéĞø½è</a></td></tr>\
-<tr><td id=giveback onMouseOver=overbg(giveback) onMouseOut=outbg(giveback)><a href=bookBack.html>Í¼Êé¹é»¹</a></td></tr>\
+var borrowmenu='<table width=60><tr><td id=Borrow onMouseOver=overbg(Borrow) onMouseOut=outbg(Borrow)><a href="bookBorrow.html">å›¾ä¹¦å€Ÿé˜…</a></td></tr>\
+<tr><td id=renew onMouseOver=overbg(renew) onMouseOut=outbg(renew)><a href=bookRenew.html>å›¾ä¹¦ç»­å€Ÿ</a></td></tr>\
+<tr><td id=giveback onMouseOver=overbg(giveback) onMouseOut=outbg(giveback)><a href=bookBack.html>å›¾ä¹¦å½’è¿˜</a></td></tr>\
 </table>'
-var querymenu='<table width=90><tr><td id=bookQuery onMouseOver=overbg(bookQuery) onMouseOut=outbg(bookQuery)><a href="bookQuery.html">Í¼Êéµµ°¸²éÑ¯</a></td></tr>\
-<tr><td id=borrowQuery onMouseOver=overbg(borrowQuery) onMouseOut=outbg(borrowQuery)><a href="borrowQuery.html">Í¼Êé½èÔÄ²éÑ¯</a></td></tr>\
-<tr><td id=givebackQuery onMouseOver=overbg(givebackQuery) onMouseOut=outbg(givebackQuery)><a href="bremind.html">½èÔÄµ½ÆÚÌáĞÑ</a></td></tr>\
+var querymenu='<table width=90><tr><td id=bookQuery onMouseOver=overbg(bookQuery) onMouseOut=outbg(bookQuery)><a href="bookQuery.html">å›¾ä¹¦æ¡£æ¡ˆæŸ¥è¯¢</a></td></tr>\
+<tr><td id=borrowQuery onMouseOver=overbg(borrowQuery) onMouseOut=outbg(borrowQuery)><a href="borrowQuery.html">å›¾ä¹¦å€Ÿé˜…æŸ¥è¯¢</a></td></tr>\
+<tr><td id=givebackQuery onMouseOver=overbg(givebackQuery) onMouseOut=outbg(givebackQuery)><a href="bremind.html">å€Ÿé˜…åˆ°æœŸæé†’</a></td></tr>\
 </table>'

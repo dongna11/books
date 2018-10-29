@@ -1,19 +1,34 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 
 # Create your views here.
 #登陆界面
+from adminbook.models import *
+from adminbook.models import TRoot
+
+
+
 def loginbook(request):
-    return render(request,'login.html')
+    #接受数据
+    if request.method == 'GET':
+        return render(request, 'login.html')
+    else:
+        name=request.POST.get('name','')
+        pwd=request.POST.get('pwd','')
+        count=TRoot.objects.filter(rname=name,rpwd=pwd).count()
+        #print(count)
+        if count==1:
+            return render(request,'main.html')
+        else:
+            return render(request,'login.html')
 
 #首页
 def indexbook(request):
     return render(request,'main.html')
 
-
 #图书归还
 def returnbook(request):
     return render(request,'bookBack.html')
-
 
 #图书借阅
 def borrowingbook(request):
@@ -36,7 +51,8 @@ def renewalbook(request):
 
 #图书类型设置
 def typebook(request):
-    return render(request,'bookType.html')
+    booktypes=TBooktype.objects.all()
+    return render(request,'bookType.html',{'booktypes':booktypes})
 
 
 #图书借阅查询
@@ -56,7 +72,8 @@ def librarybook(request):
 
 #图书档案管理
 def rankingbook(request):
-    return render(request,'book.html')
+    books=TBook.objects.all()
+    return render(request,'book.html',{'books':books})
 
 
 #管理员设置
@@ -76,8 +93,24 @@ def changepwdbook(request):
 
 #读者档案管理
 def managementbook(request):
-    return render(request,'reader.html')
+    readers=TReader.objects.all()
+    return render(request,'reader.html',{'readers':readers})
 
 #读者类型管理
 def typemanagementbook(request):
-    return render(request,'readerType.html')
+    readertypes=TReadertype.objects.all()
+    return render(request,'readerType.html',{'readertypes':readertypes})
+
+
+def addreader(request):
+    if request.method=='GET':
+        readertypes = TReadertype.objects.all()
+        return render(request,'addreader.html',{'readertypes':readertypes})
+    else:
+        rname=request.POST.get('rname','')
+        rtype=request.POST.get('rtype','')
+        rcardtype=request.POST.get('rcardtype','')
+        rcardnum=request.POST.get('rcardnum','')
+        remail=request.POST.get('remail','')
+
+        return HttpResponse('注册成功')

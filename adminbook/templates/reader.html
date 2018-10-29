@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block main %}
+ <tr>
+                    <td height="510" valign="top" style="padding:5px;">
+                        <table width="98%" height="487" border="0" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td height="22" valign="top" class="word_orange">当前位置：读者管理 &gt; 读者档案管理 &gt;&gt;&gt;</td>
+                            </tr>
+                            <tr>
+                                <td align="center" valign="top">
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td width="87%">&nbsp;</td>
+                                            <td width="13%">
+                                                <a href="/index/addreader/">添加读者信息</a></td>
+                                        </tr>
+                                    </table>
+                                    <table width="95%" border="1" cellpadding="0" cellspacing="0" bordercolor="#FFFFFF"
+                                           bordercolordark="#F6B83B" bordercolorlight="#FFFFFF">
+                                        <tr align="center" bgcolor="#e3F4F7">
+                                            <td width="13%" bgcolor="#F9D16B">条形码</td>
+                                            <td width="10%" bgcolor="#F9D16B">姓名</td>
+                                            <td width="8%" bgcolor="#F9D16B">读者类型</td>
+                                            <td width="12%" bgcolor="#F9D16B">证件类型</td>
+                                            <td width="20%" bgcolor="#F9D16B">证件号码</td>
+                                            <td width="12%" bgcolor="#F9D16B">电话</td>
+                                            <td width="15%" bgcolor="#F9D16B">Email</td>
+                                            <td width="5%" bgcolor="#F9D16B">修改</td>
+                                            <td width="5%" bgcolor="#F9D16B">删除</td>
+                                        </tr>
+                                        {% for reader in readers %}
+                                            <tr>
+                                                <td style="padding:5px;">{{ reader.id }}</td>
+                                                <td style="padding:5px;"><a
+                                                        href="reader.do?action=readerDetail&ID={{ reader.id }}">{{ reader.rname }}</a>
+                                                </td>
+                                                <td style="padding:5px;">{{ reader.rtype.rttype }}</td>
+                                                <td align="center">{{ reader.rcardtype }}</td>
+                                                <td align="center">{{ reader.rcardnum }}</td>
+                                                <td align="center">{{ reader.rtel }}</td>
+                                                <td align="center">{{ reader.remail }}</td>
+                                                <td align="center"><a
+                                                        href="reader.do?action=readerModifyQuery&ID={{ reader.id }}">修改</a></td>
+                                                <td align="center"><a href="reader.do?action=readerDel&ID={{ reader.id }}">删除</a></td>
+                                            </tr>
+                                        {% endfor %}
+
+
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+{% endblock %}

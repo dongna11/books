@@ -1,4 +1,4 @@
-//ÅĞ¶ÏÊäÈëµÄÈÕÆÚÊÇ·ñÕıÈ·
+//åˆ¤æ–­è¾“å…¥çš„æ—¥æœŸæ˜¯å¦æ­£ç¡®
 function CheckDate(INDate){
 	if (INDate==""){
 		return true;
@@ -7,7 +7,7 @@ function CheckDate(INDate){
 	if(isNaN(subYY) || subYY<=0){
 		return true;
 	}
-	//×ª»»ÔÂ·İ
+	//è½¬æ¢æœˆä»½
 	if(INDate.indexOf('-',0)!=-1){
 		separate="-";
 	}else{
@@ -23,7 +23,7 @@ function CheckDate(INDate){
 		return true;
 	}
 	if(subMM.length<2){subMM="0"+subMM}
-	//×ª»»ÈÕ
+	//è½¬æ¢æ—¥
 	area=INDate.lastIndexOf(separate)
 	subDD=INDate.substr(area+1,INDate.length-area-1)
 	if(isNaN(subDD) || subDD<=0){
@@ -36,16 +36,16 @@ function CheckDate(INDate){
     if(NewDate.substr(7,1)!="-"){return true;}
 	var MM=NewDate.substr(5,2);
 	var DD=NewDate.substr(8,2);
-	if((subYY%4==0 && subYY%100!=0)||subYY%400==0){ //ÅĞ¶ÏÊÇ·ñÎªÈòÄê
+	if((subYY%4==0 && subYY%100!=0)||subYY%400==0){ //åˆ¤æ–­æ˜¯å¦ä¸ºé—°å¹´
 		if(parseInt(MM)==2){
 			if(DD>29){return true;}
 		}
 	}else{
 		if(parseInt(MM)==2){
 			if(DD>28){return true;}
-		}	
+		}
 	}
-	var mm=new Array(1,3,5,7,8,10,12); //ÅĞ¶ÏÃ¿ÔÂÖĞµÄ×î´óÌìÊı
+	var mm=new Array(1,3,5,7,8,10,12); //åˆ¤æ–­æ¯æœˆä¸­çš„æœ€å¤§å¤©æ•°
 	for(i=0;i< mm.length;i++){
 		if (parseInt(MM) == mm[i]){
 			if(parseInt(DD)>31){

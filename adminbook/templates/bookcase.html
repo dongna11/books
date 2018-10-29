@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block main %}
+ <tr>
+                                <td height="22" valign="top" class="word_orange">当前位置：系统设置 &gt; 书架设置 &gt;&gt;&gt;</td>
+                            </tr>
+                            <tr>
+                                <td align="center" valign="top">
+                                    <table width="91%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td width="84%">&nbsp;</td>
+                                            <td width="16%" align="right">
+                                                <a href="#"
+                                                   onClick="window.open('bookcase_add.jsp','','width=292,height=175')">添加书架信息</a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table width="91%" border="1" cellpadding="0" cellspacing="0" bordercolor="#FFFFFF"
+                                           bordercolordark="#F6B83B" bordercolorlight="#FFFFFF">
+                                        <tr align="center" bgcolor="#e3F4F7">
+                                            <td width="70%" bgcolor="#F9D16B">书架名称</td>
+                                            <td width="16%" bgcolor="#F9D16B">修改</td>
+                                            <td width="14%" bgcolor="#F9D16B">删除</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="padding:5px;">A架</td>
+                                            <td align="center"><a href="#"
+                                                                  onClick="window.open('bookCase.do?action=bookCaseModifyQuery&ID=3','','width=292,height=175')">修改</a>
+                                            </td>
+                                            <td align="center"><a href="bookCase.do?action=bookCaseDel&ID=3">删除</a></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="padding:5px;">B架</td>
+                                            <td align="center"><a href="#"
+                                                                  onClick="window.open('bookCase.do?action=bookCaseModifyQuery&ID=4','','width=292,height=175')">修改</a>
+                                            </td>
+                                            <td align="center"><a href="bookCase.do?action=bookCaseDel&ID=4">删除</a></td>
+                                        </tr>
+
+                                    </table>
+                                </td>
+                            </tr>
+{% endblock %}
