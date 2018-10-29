@@ -3,7 +3,7 @@
 body {
 	FONT-SIZE: 9pt;
 	margin:0px;
-	/*BACKGROUND-IMAGE: url(../Images/bg.gif);*/
+	/*BACKGROUND-IMAGE: url(/static/bg.gif);*/
 	SCROLLBAR-FACE-COLOR: #dddddd;
 	SCROLLBAR-HIGHLIGHT-COLOR: #ffffff;
 	SCROLLBAR-SHADOW-COLOR: #fcfcfc; COLOR: #000000;
@@ -109,7 +109,7 @@ border-style:none;
 	border-Top-style:none;
 }
 .menuitems1{
-	margin:2px;padding:1px;word-break:keep-all;background-image:url("Images/item_out.gif");
+	margin:2px;padding:1px;word-break:keep-all;background-image:url("/static/item_out.gif");
 }
 div.quote{margin:5px 20px;border:1px solid #8492b9;padding:5px;background:#8492b9 ;line-height : normal ;
 }
@@ -120,7 +120,7 @@ font-size:12px;font-family:Tahoma;font-style : oblique;line-height : normal ;fon
 	BORDER: #B0690B 1px solid; VISIBILITY: hidden;
 	POSITION: absolute;
 	/*BACKGROUND-COLOR:#EFEFEF;*/
-	background-image:url("../Images/item_out.gif");
+	background-image:url("/static/item_out.gif");
 	background-repeat : repeat-y;
     /*Filter: Alpha(Opacity=85);*/
 	}
