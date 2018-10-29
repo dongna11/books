@@ -4,14 +4,13 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.http import HttpResponse
 # Create your views here.
-#登陆界面
+
 from adminbook.models import *
 from adminbook.models import TRoot
 
 
-
+#登陆界面
 def loginbook(request):
-    #接受数据
     if request.method == 'GET':
         return render(request, 'login.html')
     else:
@@ -75,8 +74,6 @@ def renewalbook(request):
 def typebook(request):
     booktypes=TBooktype.objects.all()
     return render(request,'bookType.html',{'booktypes':booktypes})
-
-
 #图书借阅查询
 def enquirybook(request):
     return render(request,'bookQuery.html')
