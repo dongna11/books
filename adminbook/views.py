@@ -117,19 +117,27 @@ def rankingbook(request):
 
 #管理员设置
 def administratorbook(request):
+
     return render(request,'manager.html')
 
 
 #参数设置
 def parameterbook(request):
-    return render(request,'parameter_modify.html')
-
-
+    if request.method == 'GET':
+        books = TLibrary.objects.first()
+        return render(request,'parameter_modify.html',{'books':books})
+    else:
+        cost = request.POST.get('cost','')
+        validity = request.POST.get('validity','')
+        tlis = TLibrary.objects.first()
+        tlis.lmoney = cost
+        tlis.ltime = validity
+        tlis.save()
+        return HttpResponse('完成')
 #更改口令
 def changepwdbook(request):
     rootname = request.POST.get('name', '')
     # print(rootname)
-
     newpwd = request.POST.get('pwd', '')
     checknewpwd = request.POST.get('pwd1', '')
     # print(rootname,newpwd,checknewpwd)

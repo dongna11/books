@@ -22,5 +22,6 @@ urlpatterns = [
     url(r'^addreader/',views.addreader),
     url(r'^addreadertype/',views.addreadertype),
     url(r'changereader/',views.changereader),
-    url(r'changereadertype/',views.changereadertype)
+    url(r'changereadertype/',views.changereadertype),
+    url(r'^parameters/',views.parameterbook),
 ]
