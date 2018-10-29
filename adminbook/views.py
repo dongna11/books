@@ -51,7 +51,8 @@ def renewalbook(request):
 
 #图书类型设置
 def typebook(request):
-    return render(request,'bookType.html')
+    booktypes=TBooktype.objects.all()
+    return render(request,'bookType.html',{'booktypes':booktypes})
 
 
 #图书借阅查询
@@ -71,7 +72,8 @@ def librarybook(request):
 
 #图书档案管理
 def rankingbook(request):
-    return render(request,'book.html')
+    books=TBook.objects.all()
+    return render(request,'book.html',{'books':books})
 
 
 #管理员设置
@@ -98,3 +100,17 @@ def managementbook(request):
 def typemanagementbook(request):
     readertypes=TReadertype.objects.all()
     return render(request,'readerType.html',{'readertypes':readertypes})
+
+
+def addreader(request):
+    if request.method=='GET':
+        readertypes = TReadertype.objects.all()
+        return render(request,'addreader.html',{'readertypes':readertypes})
+    else:
+        rname=request.POST.get('rname','')
+        rtype=request.POST.get('rtype','')
+        rcardtype=request.POST.get('rcardtype','')
+        rcardnum=request.POST.get('rcardnum','')
+        remail=request.POST.get('remail','')
+
+        return HttpResponse('注册成功')
