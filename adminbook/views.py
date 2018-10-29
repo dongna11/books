@@ -1,12 +1,26 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 
 # Create your views here.
 #登陆界面
 from adminbook.models import *
+from adminbook.models import TRoot
+
 
 
 def loginbook(request):
-    return render(request,'login.html')
+    #接受数据
+    if request.method == 'GET':
+        return render(request, 'login.html')
+    else:
+        name=request.POST.get('name','')
+        pwd=request.POST.get('pwd','')
+        count=TRoot.objects.filter(rname=name,rpwd=pwd).count()
+        #print(count)
+        if count==1:
+            return render(request,'main.html')
+        else:
+            return HttpResponse("密码或账号错误")
 
 #首页
 def indexbook(request):
