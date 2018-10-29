@@ -21,7 +21,7 @@ def loginbook(request):
         if count==1:
             return render(request,'main.html')
         else:
-            return HttpResponse("密码或账号错误")
+            return render(request,'login.html')
 
 #首页
 def indexbook(request):
