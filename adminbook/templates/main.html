@@ -15,7 +15,7 @@
                                         <tr>
                                             <td width="2%" rowspan="2">&nbsp;</td>
                                             <td width="96%" align="center" valign="top">
-                                                <table width="100%" border="1" cellpadding="0" cellspacing="0"
+                                                <table class="table1" width="90%" border="1" cellpadding="0" cellspacing="0"
                                                        bordercolor="#FFFFFF" bordercolordark="#B7B6B6"
                                                        bordercolorlight="#FFFFFF">
                                                     <tr align="center">
@@ -26,46 +26,33 @@
                                                         <td width="10%">书架</td>
                                                         <td width="14%">出版社</td>
                                                         <td width="11%">作者</td>
-                                                        <td>定价(元)</td>
-                                                        <td>借阅次数</td>
                                                     </tr>
+                                                    {% for tb in tbooks %}
+                                                            <tr>
+                                                                <td height="25" align="center">{{ forloop.counter }}</td>
+                                                                <td style="padding:5px;" align="center">&nbsp;{{ tb.id }}</td>
+                                                                <td style="padding:5px;" align="center">{{ tb.bname }}</td>
+                                                                <td style="padding:5px;" align="center">{{ tb.btype.bttype }}</td>
+                                                                <td align="center">&nbsp;{{ tb.bbookrack.brname }}</td>
+                                                                <td align="center">&nbsp;{{ tb.bpublish.hname }}</td>
+                                                                <td width="11%" align="center">{{ tb.bwriter.wname }}</td>
+                                                            </tr>
+                                                    {% endfor %}
+                                                </table>
 
-                                                    <tr>
-                                                        <td height="25" align="center">1</td>
-                                                        <td style="padding:5px;">&nbsp;9787302047230</td>
-                                                        <td style="padding:5px;">Java学习指南</td>
-                                                        <td style="padding:5px;">计算机类</td>
-                                                        <td align="center">&nbsp;A架</td>
-                                                        <td align="center">&nbsp;电子工业出版社</td>
-                                                        <td width="11%" align="center">***</td>
-                                                        <td width="8%" align="center">39.0</td>
-                                                        <td width="8%" align="center">4</td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td height="25" align="center">2</td>
-                                                        <td style="padding:5px;">&nbsp;001</td>
-                                                        <td style="padding:5px;">建筑测试</td>
-                                                        <td style="padding:5px;">建筑类</td>
-                                                        <td align="center">&nbsp;B架</td>
-                                                        <td align="center">&nbsp;电子工业出版社</td>
-                                                        <td width="11%" align="center">做做</td>
-                                                        <td width="8%" align="center">11.0</td>
-                                                        <td width="8%" align="center">4</td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td height="25" align="center">3</td>
-                                                        <td style="padding:5px;">&nbsp;9787115157690</td>
-                                                        <td style="padding:5px;">JSP啊</td>
-                                                        <td style="padding:5px;">计算机类</td>
-                                                        <td align="center">&nbsp;A架</td>
-                                                        <td align="center">&nbsp;清华大学出版社</td>
-                                                        <td width="11%" align="center">***</td>
-                                                        <td width="8%" align="center">89.0</td>
-                                                        <td width="8%" align="center">2</td>
-                                                    </tr>
-
+                                                <table class="table2" width="10%" border="1" cellpadding="0" cellspacing="0"
+                                                           bordercolor="#FFFFFF" bordercolordark="#B7B6B6"
+                                                           bordercolorlight="#FFFFFF">
+                                                        <tr align="center">
+                                                            <td width="8%">借阅次数</td>
+                                                        </tr>
+                                                        {% for tc in tbc_count %}
+                                                            <tr>
+                                                                <td width="33%" height="42" align="center">
+                                                                    {{ tc }}
+                                                                </td>
+                                                            </tr>
+                                                        {% endfor %}
                                                 </table>
                                             </td>
                                             <td width="2%" rowspan="2">&nbsp;</td>
