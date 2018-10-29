@@ -1,3 +1,5 @@
+#coding=utf-8
+from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import render
 
@@ -24,7 +26,27 @@ def loginbook(request):
 
 #首页
 def indexbook(request):
-    return render(request,'main.html')
+    # 图书借阅表取得书名和借阅次数，并排序
+    tbc = TBorrow.objects.values('bname').annotate(c=Count('*')).order_by('-c')[:3]
+    # print(tbc)
+    tbooks = []
+    tbc_count = []
+    for i in tbc:
+        # 取得图书表的数据
+        # print(i)
+        tb = TBook.objects.filter(id=i['bname'])
+        listtb = list(tb)
+        tbooks.append(listtb)
+        tbc_count.append(i['c'])
+        # print(tbooks)
+
+    newlist = []
+    for ltb in tbooks:
+        for lt in ltb:
+            newlist.append(lt)
+    # print(newlist)
+    # print(tbc_count)
+    return render(request, 'main.html', {'tbooks': newlist, 'tbc_count': tbc_count})
 
 #图书归还
 def returnbook(request):
@@ -88,7 +110,23 @@ def parameterbook(request):
 
 #更改口令
 def changepwdbook(request):
-    return render(request,'pwd_Modify.html')
+    rootname = request.POST.get('name', '')
+    # print(rootname)
+
+    newpwd = request.POST.get('pwd', '')
+    checknewpwd = request.POST.get('pwd1', '')
+    # print(rootname,newpwd,checknewpwd)
+    tof = TRoot.objects.filter(rname=rootname)
+    # print(tof)
+    oldp = ''
+    for i in tof:
+        oldp = i.rpwd
+        if oldp == request.POST.get('oldpwd', ''):
+            if newpwd == checknewpwd:
+                i.rpwd = newpwd
+                i.save()
+    # print(oldp)
+    return render(request, 'pwd_Modify.html', {'oldp': oldp})
 
 
 #读者档案管理
