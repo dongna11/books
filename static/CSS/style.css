@@ -23,6 +23,14 @@ a:hover {
 a {
 	font-size: 9pt;	text-decoration: none;	color: #777777;
 }
+
+.table1{
+	float: left;
+        }
+.table2{
+	float: right;
+        }
+
 .btn_grey {
 	font-family: "宋体";	font-size: 9pt;color: #333333;
 	background-color: #eeeeee;cursor: hand;padding:1px;height:19px;
