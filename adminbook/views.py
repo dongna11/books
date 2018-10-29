@@ -3,8 +3,8 @@ from django.shortcuts import render
 
 # Create your views here.
 #登陆界面
+from adminbook.models import *
 from adminbook.models import TRoot
-
 
 
 
@@ -91,8 +91,10 @@ def changepwdbook(request):
 
 #读者档案管理
 def managementbook(request):
-    return render(request,'reader.html')
+    readers=TReader.objects.all()
+    return render(request,'reader.html',{'readers':readers})
 
 #读者类型管理
 def typemanagementbook(request):
-    return render(request,'readerType.html')
+    readertypes=TReadertype.objects.all()
+    return render(request,'readerType.html',{'readertypes':readertypes})
