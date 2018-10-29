@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-
+from django.http import HttpResponse
 # Create your views here.
 #登陆界面
 from adminbook.models import *
@@ -63,8 +63,6 @@ def enquirybook(request):
 #借阅到期提醒
 def reminderbook(request):
     return render(request,'bremind.html')
-
-
 #图书馆信息
 def librarybook(request):
     if request.method == 'GET':
