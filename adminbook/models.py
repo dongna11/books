@@ -27,7 +27,7 @@ class TBook(models.Model):
     bborrow = models.IntegerField()
     bpublish = models.ForeignKey('THouse', models.DO_NOTHING, db_column='bpublish')
     bbookrack = models.ForeignKey('TBookrack', models.DO_NOTHING, db_column='bbookrack')
-
+    bdelete=models.BooleanField()
     class Meta:
         managed = False
         db_table = 't_book'
@@ -96,7 +96,7 @@ class TReader(models.Model):
     rcardnum = models.CharField(max_length=20)
     rtel = models.CharField(max_length=20)
     remail = models.CharField(max_length=30)
-
+    rdelete=models.BooleanField()
     class Meta:
         managed = False
         db_table = 't_reader'

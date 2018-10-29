@@ -28,10 +28,9 @@
                                             <tr>
                                                 <td style="padding:5px;">&nbsp;{{ readertype.rttype }}</td>
                                                 <td style="padding:5px;">&nbsp;{{ readertype.rtnum }}</td>
-                                                <td align="center"><a href="#"
-                                                                      onClick="window.open('readerType.do?action=readerTypeModifyQuery&ID=1','','width=292,height=175')">修改</a>
+                                                <td align="center"><a href="/index/changereadertype/?ID={{ readertype.id }}">修改</a>
                                                 </td>
-                                                <td align="center"><a href="readerType.do?action=readerTypeDel&ID=1">删除</a>
+                                                <td align="center"><a href="/index/typemanagements/?action=0&ID={{ readertype.id }}">删除</a>
                                                 </td>
                                             </tr>
                                         {% endfor %}

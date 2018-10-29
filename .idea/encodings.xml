@@ -2,6 +2,7 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/static/CSS/style.css" charset="UTF-16" />
-    <file url="file://$PROJECT_DIR$/templates/main.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/static/JS/function.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/static/JS/onclock.JS" charset="UTF-8" />
   </component>
 </project>
