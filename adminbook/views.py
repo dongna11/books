@@ -67,7 +67,29 @@ def reminderbook(request):
 
 #图书馆信息
 def librarybook(request):
-    return render(request,'library_modify.html')
+    if request.method == 'GET':
+        tlibrary = TLibrary.objects.first()
+        return render(request, 'library_modify.html', {'tlibrary': tlibrary})
+    else:
+        libraryname = request.POST.get('libraryname', '')
+        curator = request.POST.get('curator', '')
+        tel = request.POST.get('tel', '')
+        address = request.POST.get('address', '')
+        email = request.POST.get('email', '')
+        url = request.POST.get('url', '')
+        createDate = request.POST.get('createDate', '')
+        introduce = request.POST.get('introduce', '')
+        tlibrary = TLibrary.objects.first()
+        tlibrary.lname = libraryname
+        tlibrary.lusername = curator
+        tlibrary.ltel = tel
+        tlibrary.lsite = address
+        tlibrary.lemail = email
+        tlibrary.lnet = url
+        tlibrary.lbirthday = createDate
+        tlibrary.lword = introduce
+        tlibrary.save()
+        return HttpResponse('保存成功')
 
 
 #图书档案管理
