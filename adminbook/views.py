@@ -21,7 +21,7 @@ def loginbook(request):
         if count==1:
             return render(request,'main.html')
         else:
-            return HttpResponse("密码或账号错误")
+            return render(request,'login.html')
 
 #首页
 def indexbook(request):
@@ -63,7 +63,34 @@ def setupbook(request):
 
 #图书档案查询
 def filesearchbook(request):
-    return render(request,'bookQuery.html')
+    if request.method == 'GET':
+        #所有图书对象
+        allbooks = TBook.objects.all()
+        return render(request,'bookQuery.html',{'allbooks':allbooks})
+    else:
+        select1 = request.POST.get('f','')
+        submit1 = request.POST.get('key','')
+        try:
+            if select1 == 'barcode':
+                allbooks = TBook.objects.filter(id=submit1)
+                return render(request, 'bookQuery.html', {'allbooks': allbooks})
+            elif select1 == 'typename':
+                leibieid = TBooktype.objects.get(bttype=submit1).id
+                allbooks = TBook.objects.filter(btype=leibieid)
+                return render(request, 'bookQuery.html', {'allbooks': allbooks})
+            elif select1 == 'bookname':
+                allbooks = TBook.objects.filter(bname=submit1)
+                return render(request, 'bookQuery.html', {'allbooks': allbooks})
+            elif select1 == 'publishing':
+                chubansheid = THouse.objects.get(hname=submit1).id
+                allbooks = TBook.objects.filter(bpublish=chubansheid)
+                return render(request, 'bookQuery.html', {'allbooks': allbooks})
+            elif select1 == 'bookcasename':
+                shujiaid = TBookrack.objects.get(brname=submit1).id
+                allbooks = TBook.objects.filter(bbookrack=shujiaid)
+                return render(request,'bookQuery.html',{'allbooks':allbooks})
+        except:
+            return render(request,'yichang.html')
 
 
 #图书续借
@@ -192,7 +219,7 @@ def addreader(request):
         remail=request.POST.get('remail','')
         rtypename=TReadertype.objects.get(rttype=rtype).id
         # print(rname,rtype,rcardtype,rcardnum,rtel,remail)
-        sb=TReader.objects.create(rname=rname,rtype=TReadertype.objects.get(rttype=rtype),rcardtype=rcardtype,rcardnum=rcardnum,remail=remail,rtel=rtel)
+        sb=TReader.objects.create(rname=rname,rtype=TReadertype.objects.get(rttype=rtype),rcardtype=rcardtype,rcardnum=rcardnum,remail=remail,rtel=rtel,rdelete=0)
         return HttpResponse('注册成功')
 
 
@@ -224,7 +251,7 @@ def changereader(request):
         remail=request.POST.get('remail','')
         rtypename=TReadertype.objects.get(rttype=rtype).id
         # print(rname,rtype,rcardtype,rcardnum,rtel,remail)
-        sb=TReader.objects.filter(id=readerid).update(rname=rname,rtype=TReadertype.objects.get(rttype=rtype),rcardtype=rcardtype,rcardnum=rcardnum,remail=remail,rtel=rtel)
+        sb=TReader.objects.filter(id=readerid).update(rname=rname,rtype=TReadertype.objects.get(rttype=rtype),rcardtype=rcardtype,rcardnum=rcardnum,remail=remail,rtel=rtel,rdelete=0)
         return HttpResponse('修改成功')
 
 def changereadertype(request):
