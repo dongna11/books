@@ -14,12 +14,12 @@ function clockon(bgclock){
 	if(hour<10) hour="0"+hour;
 	if(minu<10) minu="0"+minu;
 	if(sec<10) sec="0"+sec;
-	var arr_week=new Array("ÐÇÆÚÈÕ","ÐÇÆÚÒ»","ÐÇÆÚ¶þ","ÐÇÆÚÈý","ÐÇÆÚËÄ","ÐÇÆÚÎå","ÐÇÆÚÁù");
+	var arr_week=new Array("æ˜ŸæœŸæ—¥","æ˜ŸæœŸä¸€","æ˜ŸæœŸäºŒ","æ˜ŸæœŸä¸‰","æ˜ŸæœŸå››","æ˜ŸæœŸäº”","æ˜ŸæœŸå…­");
 	week=arr_week[day];
 	var time="";
-	time=year+"Äê"+month+"ÔÂ"+date+"ÈÕ "+week+" "+hour+":"+minu+":"+sec;
+	time=year+"å¹´"+month+"æœˆ"+date+"æ—¥ "+week+" "+hour+":"+minu+":"+sec;
 	if(document.all){
 		bgclock.innerHTML="<b>"+time+"</b>"
 	}
 	var timer=setTimeout("clockon(bgclock)",200);
-} 
+}

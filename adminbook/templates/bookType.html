@@ -25,33 +25,17 @@
                                             <td width="16%" bgcolor="#F9D16B">修改</td>
                                             <td width="14%" bgcolor="#F9D16B">删除</td>
                                         </tr>
-
+                                        {% for booktype in booktypes %}
                                         <tr>
-                                            <td style="padding:5px;">计算机类</td>
-                                            <td style="padding:5px;">30</td>
+                                            <td style="padding:5px;">{{ booktype.bttype }}</td>
+                                            <td style="padding:5px;">{{ booktype.btday }}</td>
                                             <td align="center"><a href="#"
                                                                   onClick="window.open('bookType.do?action=bookTypeModifyQuery&ID=1','','width=292,height=175')">修改</a>
                                             </td>
                                             <td align="center"><a href="bookType.do?action=bookTypeDel&ID=1">删除</a></td>
                                         </tr>
+                                        {% endfor %}
 
-                                        <tr>
-                                            <td style="padding:5px;">文学类</td>
-                                            <td style="padding:5px;">35</td>
-                                            <td align="center"><a href="#"
-                                                                  onClick="window.open('bookType.do?action=bookTypeModifyQuery&ID=3','','width=292,height=175')">修改</a>
-                                            </td>
-                                            <td align="center"><a href="bookType.do?action=bookTypeDel&ID=3">删除</a></td>
-                                        </tr>
-
-                                        <tr>
-                                            <td style="padding:5px;">建筑类</td>
-                                            <td style="padding:5px;">20</td>
-                                            <td align="center"><a href="#"
-                                                                  onClick="window.open('bookType.do?action=bookTypeModifyQuery&ID=4','','width=292,height=175')">修改</a>
-                                            </td>
-                                            <td align="center"><a href="bookType.do?action=bookTypeDel&ID=4">删除</a></td>
-                                        </tr>
 
                                     </table>
                                 </td>
