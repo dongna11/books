@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block main %}
+    <tr>
+        <td height="22" valign="top" class="word_orange">当前位置：读者管理 &gt; 修改读者类型 &gt;&gt;&gt;</td>
+    </tr>
+    <form action="/index/changereadertype/" method="post">
+        {% csrf_token %}
+        <table width="98%" height="38" border="0" cellpadding="0" cellspacing="0"
+               bgcolor="#E3F4F7" class="tableBorder_gray">
+            <tr>
+                <td>读者类型编号：</td>
+                <td><input readonly="true" type="text" name="id" id=""value="{{ readertype.id }}"></td>
+            </tr>
+            <tr>
+                <td>读者类型：</td>
+                <td><input type="text" name="rttype" id=""value="{{ readertype.rttype }}"></td>
+            </tr>
+
+            <tr>
+                <td>可借数量：</td>
+                <td><input type="number" name="rtnum" id=""value="{{ readertype.rtnum }}"></td>
+            </tr>
+
+            <tr>
+                <td colspan="2"><input type="submit" value="修改"></td>
+            </tr>
+        </table>
+    </form>
+{% endblock %}
