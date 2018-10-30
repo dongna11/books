@@ -26,5 +26,6 @@ urlpatterns = [
     url(r'addbook/',views.addbook),
     url(r'changebook/',views.changebook),
     url(r'addbooktype/',views.addbooktype),
-    url(r'changebooktype',views.changebooktype)
+    url(r'changebooktype',views.changebooktype),
+    url(r'^parameters/',views.parameterbook),
 ]
