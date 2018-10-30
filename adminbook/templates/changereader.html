@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block main %}
+    <tr>
+        <td height="22" valign="top" class="word_orange">当前位置：读者管理 &gt; 修改读者信息 &gt;&gt;&gt;</td>
+    </tr>
+    <form action="/index/changereader/ }}" method="post">
+        {% csrf_token %}
+        <table width="98%" height="38" border="0" cellpadding="0" cellspacing="0"
+               bgcolor="#E3F4F7" class="tableBorder_gray">
+            <tr>
+                <td>读者编号：</td>
+                <td><input readonly="true" type="text" name="id" id="" value="{{ reader.id }}"></td>
+            </tr>
+            <tr>
+                <td>姓名：</td>
+                <td><input type="text" name="rname" id="" value="{{ reader.rname }}"></td>
+            </tr>
+            <tr>
+                <td>读者类型：</td>
+                <td><select name="readertype" id="" >
+                    {% for readertype in readertypes %}
+                        {% if readertype.id == reader.rtype.id %}
+                            <option value="{{ readertype.rttype }}" selected="selected">{{ readertype.rttype }}</option>
+                        {% else %}
+                            <option value="{{ readertype.rttype }}">{{ readertype.rttype }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                </td>
+            </tr>
+            <tr>
+                <td>证件类型：</td>
+                <td><input type="text" name="rcardtype" id="" value="{{ reader.rcardtype }}"></td>
+                <td>证件号码：</td>
+                <td><input type="number" name="rcardnum" id="" value="{{ reader.rcardnum }}"></td>
+            </tr>
+            <tr>
+                <td>电子邮箱：</td>
+                <td><input type="text" name="remail" id="" value="{{ reader.remail }}"></td>
+            </tr>
+            <tr>
+                <td>联系电话：</td>
+                <td><input type="number" name="rtel" id="" value="{{ reader.rtel }}"></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="修改"></td>
+            </tr>
+        </table>
+    </form>
+{% endblock %}
