@@ -3,6 +3,7 @@ from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.http import HttpResponse
+import time,datetime
 # Create your views here.
 
 from adminbook.models import *
@@ -49,8 +50,24 @@ def indexbook(request):
 
 #图书归还
 def returnbook(request):
-    return render(request,'bookBack.html')
 
+
+    if request.method=="GET":
+        return render(request,'bookBack.html')
+    else:
+        borrow=request.POST.getlist('borrow','')
+        if borrow:
+            for x in borrow:
+                book=TBook.objects.get(id=x)
+                TBorrow.objects.filter(bname=book).update(breturn=1,brealreturntime=datetime.datetime.now())
+                book.bborrow=0
+                book.save()
+        readerid=request.POST.get('readerid','')
+        readers=TReader.objects.filter(id=readerid)
+        for a in readers:
+            reader=a
+        bookes=TBorrow.objects.filter(breader=reader.id)
+        return render(request,'bookBack.html',{'reader':reader,"bookes":bookes})
 #图书借阅
 def borrowingbook(request):
     return render(request,'bookBorrow.html')
@@ -122,7 +139,7 @@ def rankingbook(request):
     if action==1:
         return render(request,'book.html',{'books':books})
     elif action==0:
-        bookid=request.GET.get('ID',())
+        bookid=request.GET.get('ID','')
         a=TBook.objects.get(id=bookid)
         a.bdelete=1
         a.save()
