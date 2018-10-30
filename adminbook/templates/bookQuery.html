@@ -1,71 +1,54 @@
 {% extends 'base.html' %}
 {% block main %}
- <tr>
-                                <td height="22" valign="top" class="word_orange">当前位置：系统查询 &gt; 图书档案查询 &gt;&gt;&gt;</td>
-                            </tr>
-                            <tr>
-                                <td align="center" valign="top">
-                                    <form action="" method="post" name="form1">
-                                        <table width="98%" height="38" border="0" cellpadding="0" cellspacing="0"
-                                               bgcolor="#E3F4F7" class="tableBorder_gray">
-                                            <tr>
-                                                <td align="center" bgcolor="#F9D16B">
+    <tr>
+        <td height="22" valign="top" class="word_orange">当前位置：系统查询 &gt; 图书档案查询 &gt;&gt;&gt;</td>
+    </tr>
+    <tr>
+        <td align="center" valign="top">
+            <form action="" method="post" name="form1">
+                {% csrf_token %}
+                <table width="98%" height="38" border="0" cellpadding="0" cellspacing="0"
+                       bgcolor="#E3F4F7" class="tableBorder_gray">
+                    <tr>
+                        <td align="center" bgcolor="#F9D16B">
 
-                                                    &nbsp;<img src="Images/search.gif" width="45" height="28"></td>
-                                                <td bgcolor="#F9D16B">请选择查询依据：
-                                                    <select name="f" class="wenbenkuang" id="f">
-                                                        <option value="barcode">条形码</option>
-                                                        <option value="typename">类别</option>
-                                                        <option value="bookname" selected>书名</option>
-                                                        <option value="author">作者</option>
-                                                        <option value="publishing">出版社</option>
-                                                        <option value="bookcasename">书架</option>
-                                                    </select>
-                                                    <input name="key" type="text" id="key" size="50">
-                                                    <input name="Submit" type="submit" class="btn_grey" value="查询"></td>
-                                            </tr>
-                                        </table>
+                            &nbsp;<img src="/static/search.gif" width="45" height="28"></td>
+                        <td bgcolor="#F9D16B">请选择查询依据：
+                            <select name="f" class="wenbenkuang" id="f">
+                                <option value="barcode">条形码</option>
+                                <option value="typename">类别</option>
+                                <option value="bookname">书名</option>
+                                <option value="author">作者</option>
+                                <option value="publishing">出版社</option>
+                                <option value="bookcasename">书架</option>
+                            </select>
+                            <input name="key" type="text" id="key" size="50">
+                            <input name="Submit" type="submit" class="btn_grey" value="查询"></td>
+                    </tr>
+                </table>
+            </form>
+            <table width="98%" border="1" cellpadding="0" cellspacing="0"
+                   bordercolor="#FFFFFF" bordercolordark="#F6B83B"
+                   bordercolorlight="#FFFFFF">
+                <tr align="center" bgcolor="#e3F4F7">
+                    <td width="17%" bgcolor="#F9D16B">条形码</td>
+                    <td width="31%" bgcolor="#F9D16B">图书名称</td>
+                    <td width="18%" bgcolor="#F9D16B">图书类型</td>
+                    <td width="19%" bgcolor="#F9D16B">出版社</td>
+                    <td width="15%" bgcolor="#F9D16B">书架</td>
+                </tr>
+                {% for book in allbooks %}
+                    <tr>
+                        <td style="padding:5px;">&nbsp;{{ book.id }}</td>
+                        <td style="padding:5px;">{{ book.bname }}
+                        </td>
+                        <td style="padding:5px;">&nbsp;{{ book.btype.bttype }}</td>
+                        <td style="padding:5px;">&nbsp;{{ book.bpublish.hname }}</td>
+                        <td style="padding:5px;">&nbsp;{{ book.bbookrack.brname }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </td>
+    </tr>
 
-                                        <table width="98%" border="1" cellpadding="0" cellspacing="0"
-                                               bordercolor="#FFFFFF" bordercolordark="#F6B83B"
-                                               bordercolorlight="#FFFFFF">
-                                            <tr align="center" bgcolor="#e3F4F7">
-                                                <td width="17%" bgcolor="#F9D16B">条形码</td>
-                                                <td width="31%" bgcolor="#F9D16B">图书名称</td>
-                                                <td width="18%" bgcolor="#F9D16B">图书类型</td>
-                                                <td width="19%" bgcolor="#F9D16B">出版社</td>
-                                                <td width="15%" bgcolor="#F9D16B">书架</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td style="padding:5px;">&nbsp;9787302047230</td>
-                                                <td style="padding:5px;"><a href="book.do?action=bookDetail&ID=1">Java学习指南</a>
-                                                </td>
-                                                <td style="padding:5px;">&nbsp;计算机类</td>
-                                                <td style="padding:5px;">&nbsp;电子工业出版社</td>
-                                                <td style="padding:5px;">&nbsp;A架</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td style="padding:5px;">&nbsp;001</td>
-                                                <td style="padding:5px;"><a
-                                                        href="book.do?action=bookDetail&ID=6">建筑测试</a></td>
-                                                <td style="padding:5px;">&nbsp;建筑类</td>
-                                                <td style="padding:5px;">&nbsp;电子工业出版社</td>
-                                                <td style="padding:5px;">&nbsp;B架</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td style="padding:5px;">&nbsp;9787115157690</td>
-                                                <td style="padding:5px;"><a
-                                                        href="book.do?action=bookDetail&ID=3">JSP啊</a></td>
-                                                <td style="padding:5px;">&nbsp;计算机类</td>
-                                                <td style="padding:5px;">&nbsp;清华大学出版社</td>
-                                                <td style="padding:5px;">&nbsp;A架</td>
-                                            </tr>
-
-                                        </table>
-                                    </form>
-                                </td>
-                            </tr>
 {% endblock %}
