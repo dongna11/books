@@ -1,5 +1,40 @@
+
 {% extends 'base.html' %}
 {% block main %}
+{#{{ oldp }}#}
+        <script language="javascript">
+            function checkForm(form) {
+                if (form.oldpwd.value == "") {
+                    alert("请输入的原密码!");
+                    form.oldpwd.focus();
+                    return false;
+                }
+                if (form.oldpwd.value != {{ oldp }}) {
+                    alert("您输入的原密码不正确，请重新输入!");
+        //            alert(form.holdpwd.value)
+                    form.oldpwd.value = "";
+                    form.oldpwd.focus();
+                    return false;
+                }
+                if (form.pwd.value == "") {
+                    alert("请输入的新密码!");
+                    form.pwd.focus();
+                    return false;
+                }
+                if (form.pwd1.value == "") {
+                    alert("请确认新密码!");
+                    form.pwd1.focus();
+                    return false;
+                }
+                if (form.pwd.value != form.pwd1.value) {
+                    alert("您两次输入的新密码不一致，请重新输入!");
+                    form.pwd.value = "";
+                    form.pwd1.value = "";
+                    form.pwd.focus();
+                    return false;
+                }
+            }
+    </script>
     <tr>
         <td height="22" valign="top" class="word_orange">当前位置：更改口令 &gt;&gt;&gt;</td>
     </tr>
@@ -10,7 +45,7 @@
                     <td width="84%">&nbsp;</td>
                 </tr>
             </table>
-            <input name="holdpwd" type="hidden" id="holdpwd" value={{ oldp }}></td>
+
         <form name="form1" method="post" action="">
             {% csrf_token %}
             <table width="47%" border="0" cellpadding="0" cellspacing="0"
@@ -48,4 +83,5 @@
         </form>
         </td>
     </tr>
+
 {% endblock %}

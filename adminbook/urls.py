@@ -7,13 +7,12 @@ urlpatterns = [
     url(r'^returns/',views.returnbook),
     url(r'^borrowings/', views.borrowingbook),
     url(r'^setups/', views.setupbook),
-    url(r'^filesearchs/', views.filesearchbook),
+    url(r'^filesearchs/',views.filesearchbook),
     url(r'^types/', views.typebook),
     url(r'^renewals/', views.renewalbook),
     url(r'^enquirys/', views.enquirybook),
     url(r'^reminders/',views.reminderbook),
     url(r'^librarys/',views.librarybook),
-    url(r'^reminders/',views.reminderbook),
     url(r'^lendingrankings/',views.rankingbook),
     url(r'^administrators/',views.administratorbook),
     url(r'^changepwds/',views.changepwdbook),
@@ -22,5 +21,5 @@ urlpatterns = [
     url(r'^addreader/',views.addreader),
     url(r'^addreadertype/',views.addreadertype),
     url(r'changereader/',views.changereader),
-    url(r'changereadertype/',views.changereadertype)
+    url(r'changereadertype/',views.changereadertype),
 ]
