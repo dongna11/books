@@ -169,9 +169,10 @@ def changepwdbook(request):
     checknewpwd = request.POST.get('pwd1', '')
     # print(rootname,newpwd,checknewpwd)
     tof = TRoot.objects.filter(rname=rootname)
-    # print(tof)
+    #print(tof)
     oldp = ''
     for i in tof:
+        print(i)
         oldp = i.rpwd
         if oldp == request.POST.get('oldpwd', ''):
             if newpwd == checknewpwd:
