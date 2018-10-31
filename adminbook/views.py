@@ -50,16 +50,15 @@ def indexbook(request):
 
 #图书归还
 def returnbook(request):
-
-
     if request.method=="GET":
         return render(request,'bookBack.html')
     else:
         borrow=request.POST.getlist('borrow','')
+        # print(borrow)
         if borrow:
             for x in borrow:
-                book=TBook.objects.get(id=x)
-                TBorrow.objects.filter(bname=book).update(breturn=1,brealreturntime=datetime.datetime.now())
+                book=TBorrow.objects.get(id=x).bname
+                TBorrow.objects.filter(id=x).update(breturn=1,brealreturntime=datetime.datetime.now())
                 book.bborrow=0
                 book.save()
         readerid=request.POST.get('readerid','')
@@ -112,7 +111,21 @@ def filesearchbook(request):
 
 #图书续借
 def renewalbook(request):
-    return render(request,'bookRenew.html')
+    if request.method=='GET':
+        return render(request,'bookRenew.html')
+    else:
+        renew=request.POST.getlist('renew','')
+        if renew:
+            for x in renew:
+                # book=TBook.objects.get(id=x)
+                time=TBorrow.objects.get(id=x).breturntime
+                TBorrow.objects.filter(id=x).update(badd=1,breturntime=time+datetime.timedelta(days=30))
+        readerid=request.POST.get('reader','')
+        readers=TReader.objects.filter(id=readerid)
+        for x in readers:
+            reader=x
+        bookes=TBorrow.objects.filter(breader=reader)
+        return render(request,'bookRenew.html',{'bookes':bookes,'reader':reader})
 
 #图书类型设置
 def typebook(request):
