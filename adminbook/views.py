@@ -1,8 +1,10 @@
 #coding=utf-8
+import random
 from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.db import connection,transaction
 # Create your views here.
 
 from adminbook.models import *
@@ -53,9 +55,25 @@ def returnbook(request):
 
 #图书借阅
 def borrowingbook(request):
-    return render(request,'bookBorrow.html')
-
-
+    if request.method == 'GET':
+        tbok = TBook.objects.all()
+        barcode = request.POST.get('barcode')
+        return render(request,'bookBorrow.html',{'tbok':tbok})
+    else:
+        barcode = request.POST.get('barcode')
+        noborder = request.POST.get('noborder')
+        if barcode:
+            tbok = TBook.objects.all()
+            treader = TReader.objects.get(id=barcode)
+            if noborder:
+                cour = connection.cursor()
+                # cour.execute("INSERT INTO `book`.`t_borrow` (breader,bname,bborrowtime,breturntime,brealreturntime,badd,breturn) VALUES (barcode,noborder,NOW(),'2018-11-7','2018-11-11','0','1')")
+                cour.execute("INSERT INTO `book`.`t_borrow` VALUES (null,%s,%s,NOW(),'2018-11-7','2018-11-11','0','1')"%(barcode,noborder))
+                rows = cour.fetchall()
+                return HttpResponse('借阅完成')
+            return render(request,'bookBorrow.html',{'treader':treader,'tbok':tbok})
+        else:
+            return render(request,'bookBorrow.html')
 #书架设置
 def setupbook(request):
     return render(request,'bookcase.html')
@@ -146,7 +164,6 @@ def rankingbook(request):
 def administratorbook(request):
 
     return render(request,'manager.html')
-
 
 #参数设置
 def parameterbook(request):
