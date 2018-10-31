@@ -20,10 +20,27 @@ class DjangoMigrations(models.Model):
         db_table = 'django_migrations'
 
 
+class TBooktype(models.Model):
+    bttype = models.CharField(max_length=20)
+    btday = models.CharField(max_length=20)
+
+    class Meta:
+        managed = False
+        db_table = 't_booktype'
+
+
+class TWriter(models.Model):
+    wname = models.CharField(max_length=30)
+
+    class Meta:
+        managed = False
+        db_table = 't_writer'
+
+
 class TBook(models.Model):
     bname = models.CharField(max_length=20)
-    btype = models.ForeignKey('TBooktype', models.DO_NOTHING, db_column='btype')
-    bwriter = models.ForeignKey('TWriter', models.DO_NOTHING, db_column='bwriter')
+    btype = models.ForeignKey(TBooktype, db_column='btype',on_delete=models.CASCADE)
+    bwriter = models.ForeignKey(TWriter, db_column='bwriter',on_delete=models.CASCADE)
     bborrow = models.IntegerField()
     bpublish = models.ForeignKey('THouse', models.DO_NOTHING, db_column='bpublish')
     bbookrack = models.ForeignKey('TBookrack', models.DO_NOTHING, db_column='bbookrack')
@@ -41,17 +58,23 @@ class TBookrack(models.Model):
         db_table = 't_bookrack'
 
 
-class TBooktype(models.Model):
-    bttype = models.CharField(max_length=20)
-    btday = models.CharField(max_length=20)
 
+
+class TReader(models.Model):
+    rname = models.CharField(max_length=20)
+    rtype = models.ForeignKey('TReadertype', models.DO_NOTHING, db_column='rtype')
+    rcardtype = models.CharField(max_length=20)
+    rcardnum = models.CharField(max_length=20)
+    rtel = models.CharField(max_length=20)
+    remail = models.CharField(max_length=30)
+    rdelete=models.BooleanField()
     class Meta:
         managed = False
-        db_table = 't_booktype'
+        db_table = 't_reader'
 
 
 class TBorrow(models.Model):
-    breader = models.ForeignKey('TReader', models.DO_NOTHING, db_column='breader')
+    breader = models.ForeignKey(TReader, db_column='breader',on_delete=models.CASCADE)
     bname = models.ForeignKey(TBook, models.DO_NOTHING, db_column='bname')
     bborrowtime = models.DateTimeField()
     breturntime = models.DateTimeField()
@@ -89,18 +112,6 @@ class TLibrary(models.Model):
         db_table = 't_library'
 
 
-class TReader(models.Model):
-    rname = models.CharField(max_length=20)
-    rtype = models.ForeignKey('TReadertype', models.DO_NOTHING, db_column='rtype')
-    rcardtype = models.CharField(max_length=20)
-    rcardnum = models.CharField(max_length=20)
-    rtel = models.CharField(max_length=20)
-    remail = models.CharField(max_length=30)
-    rdelete=models.BooleanField()
-    class Meta:
-        managed = False
-        db_table = 't_reader'
-
 
 class TReadertype(models.Model):
     rttype = models.CharField(max_length=20)
@@ -125,9 +136,3 @@ class TRoot(models.Model):
         db_table = 't_root'
 
 
-class TWriter(models.Model):
-    wname = models.CharField(max_length=30)
-
-    class Meta:
-        managed = False
-        db_table = 't_writer'

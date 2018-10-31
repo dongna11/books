@@ -64,7 +64,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'adminbook.my_processor.mydata'
+                'adminbook.my_processor.mainfunc'
             ],
         },
     },
