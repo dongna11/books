@@ -8,7 +8,7 @@ import time,datetime
 
 from adminbook.models import *
 from adminbook.models import TRoot
-
+import jsonpickle
 
 #登陆界面
 def loginbook(request):
@@ -17,9 +17,10 @@ def loginbook(request):
     else:
         name=request.POST.get('name','')
         pwd=request.POST.get('pwd','')
-        count=TRoot.objects.filter(rname=name,rpwd=pwd).count()
+        userList=TRoot.objects.filter(rname=name,rpwd=pwd)
         #print(count)
-        if count==1:
+        if userList:
+            request.session['user'] = jsonpickle.dumps(userList[0])
             return render(request,'main.html')
         else:
             return render(request,'login.html')
@@ -71,12 +72,6 @@ def returnbook(request):
 #图书借阅
 def borrowingbook(request):
     return render(request,'bookBorrow.html')
-
-
-#书架设置
-def setupbook(request):
-    return render(request,'bookcase.html')
-
 
 #图书档案查询
 def filesearchbook(request):
@@ -297,6 +292,44 @@ def changereadertype(request):
         rtnum = request.POST.get('rtnum', '')
         # print(rttype+rtnum)
         sb = TReadertype.objects.filter(id=rtid).update(rttype=rttype, rtnum=rtnum)
+        return HttpResponse('修改成功')
+
+
+#书架设置(包括删除)
+def setupbook(request):
+    action=request.GET.get('action','1')
+    if action == '1':
+        bookcase = TBookrack.objects.all()
+        return render(request, 'bookcase.html', {'bookcase': bookcase})
+    if action == '0':
+        id = request.GET.get('ID', '')
+        # print(id)
+        TBookrack.objects.get(id=id).delete()
+        bookcase = TBookrack.objects.all()
+        return render(request, 'bookcase.html', {'bookcase': bookcase})
+
+#添加书架
+def addbookcase(request):
+    if request.method=="GET":
+        return render(request,'addbookcase.html')
+    else:
+        brname=request.POST.get('brname','')
+        TBookrack.objects.create(brname=brname)
+        return HttpResponse('添加成功')
+#修改书架
+def changebookcase(request):
+    if request.method=='GET':
+        bookcaseid=request.GET.get('ID','')
+        changebookcase= TBookrack.objects.get(id=bookcaseid)
+        return render(request,'changebookcase.html',{'changebookcase':changebookcase})
+    else:
+        bid = request.POST.get('id','')
+        brname=request.POST.get('brname','')
+
+        bchange = TBookrack.objects.get(id=bid)
+        bchange.brname = brname
+        bchange.save()
+
         return HttpResponse('修改成功')
 
 

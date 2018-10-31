@@ -1,8 +1,10 @@
 from adminbook.models import TRoot
+import jsonpickle
 
+def mainfunc(request):
+    user = request.session.get('user','')
 
-def mydata(request):
-    #接受数据
-    rootname=request.POST.get('name',' ')
+    if user:
+        user = jsonpickle.loads(user)
 
-    return {'rootname':rootname}
+    return {"user":user}
