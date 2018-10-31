@@ -93,9 +93,41 @@ def borrowingbook(request):
             return render(request,'bookBorrow.html')
 #书架设置
 def setupbook(request):
-    return render(request,'bookcase.html')
+    action=request.GET.get('action','1')
+    if action == '1':
+        bookcase = TBookrack.objects.all()
+        return render(request, 'bookcase.html', {'bookcase': bookcase})
+    if action == '0':
+        id = request.GET.get('ID', '')
+        # print(id)
+        TBookrack.objects.get(id=id).delete()
+        bookcase = TBookrack.objects.all()
+        return render(request, 'bookcase.html', {'bookcase': bookcase})
 
-    return render(request,'bookBorrow.html')
+#添加书架
+def addbookcase(request):
+    if request.method=="GET":
+        return render(request,'addbookcase.html')
+    else:
+        brname=request.POST.get('brname','')
+        TBookrack.objects.create(brname=brname)
+        return HttpResponse('添加成功')
+#修改书架
+def changebookcase(request):
+    if request.method=='GET':
+        bookcaseid=request.GET.get('ID','')
+        changebookcase= TBookrack.objects.get(id=bookcaseid)
+        return render(request,'changebookcase.html',{'changebookcase':changebookcase})
+    else:
+        bid = request.POST.get('id','')
+        brname=request.POST.get('brname','')
+
+        bchange = TBookrack.objects.get(id=bid)
+        bchange.brname = brname
+        bchange.save()
+
+        return HttpResponse('修改成功')
+
 
 #图书档案查询
 def filesearchbook(request):
