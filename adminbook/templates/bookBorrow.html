@@ -6,12 +6,13 @@
                 <tr>
                     <td align="center" valign="top" style="padding:5px;">
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                            <form name="form1" method="post" action="borrow.do?action=bookborrow">
+                            <form name="form1" method="post" action="/index/borrowings/">
+                            {% csrf_token %}
                                 <tr>
-                                    <td height="47" background="Images/borrowBackRenew.gif">&nbsp;</td>
+                                    <td height="47" background="/static/borrowBackRenew.gif">&nbsp;</td>
                                 </tr>
                                 <tr>
-                                    <td height="72" align="center" valign="top" background="Images/main_booksort_1.gif"
+                                    <td height="72" align="center" valign="top" background="/static/main_booksort_1.gif"
                                         bgcolor="#F8BF73">
                                         <table width="96%" border="0" cellpadding="1" cellspacing="0"
                                                bordercolor="#FFFFFF" bgcolor="#F8BF73">
@@ -19,8 +20,6 @@
                                                 <td valign="top" bgcolor="#F8BF73">
                                                     <table width="100%" border="0" cellpadding="0" cellspacing="0"
                                                            bgcolor="#FFFFFF">
-
-
                                                         <tr>
                                                             <td>
                                                                 <table width="90%" height="21" border="0"
@@ -28,15 +27,12 @@
                                                                     <tr>
                                                                         <td width="24%" height="18"
                                                                             style="padding-left:7px;padding-top:7px;">
-                                                                            <img src="Images/reader_checkbg.jpg"
+                                                                            <img src="/static/reader_checkbg.jpg"
                                                                                  width="142" height="18"></td>
                                                                         <td width="76%" style="padding-top:7px;">读者条形码：
                                                                             <input name="barcode" type="text"
-                                                                                   id="barcode" value="" size="24">
-                                                                            &nbsp;
-                                                                            <input name="Button" type="button"
-                                                                                   class="btn_grey" value="确定"
-                                                                                   onClick="checkreader(form1)"></td>
+                                                                                   id="barcode" value="{{ treader.id }}" size="24">
+                                                                        <input name="Button" type="submit" class="btn_grey" value="确定" onClick="checkreader(form1)"></td>
                                                                     </tr>
                                                                 </table>
                                                             </td>
@@ -53,24 +49,25 @@
                                                                     <tr>
                                                                         <td height="27">姓&nbsp;&nbsp;&nbsp;&nbsp;名：
                                                                             <input name="readername" type="text"
-                                                                                   id="readername" value=""></td>
+                                                                                   id="readername" value="{{ treader.rname }}"></td>
                                                                         <td>性&nbsp;&nbsp;&nbsp;&nbsp;别：
                                                                             <input name="sex" type="text" id="sex"
                                                                                    value=""></td>
                                                                         <td>读者类型：
                                                                             <input name="readerType" type="text"
-                                                                                   id="readerType" value=""></td>
+                                                                                   id="readerType" value="{{ treader.rtype.rttype }}">
+                                                                        </td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td height="27">证件类型：
                                                                             <input name="paperType" type="text"
-                                                                                   id="paperType" value=""></td>
+                                                                                   id="paperType" value="{{ treader.rcardtype }}"></td>
                                                                         <td>证件号码：
                                                                             <input name="paperNo" type="text"
-                                                                                   id="paperNo" value=""></td>
+                                                                                   id="paperNo" value="{{ treader.rcardnum }}"></td>
                                                                         <td>可借数量：
                                                                             <input name="number" type="text" id="number"
-                                                                                   value="0" size="17">
+                                                                                   value="{{ treader.rtype.rtnum }}" size="17">
                                                                             册
                                                                             &nbsp;
                                                                         </td>
@@ -83,17 +80,13 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td height="32" background="Images/borrow_if.gif">&nbsp;添加的依据：
-                                                    <input name="f" type="radio" class="noborder" value="barcode"
-                                                           checked>
-                                                    图书条形码 &nbsp;&nbsp;
-                                                    <input name="f" type="radio" class="noborder" value="bookname">
+                                                <td height="32" bgcolor="#ff7f50">&nbsp;添加依据：
+                                                    图书条形码
+                                                    <input name="noborder" type="text" id="noborder" class="noborder" value="">
                                                     图书名称&nbsp;&nbsp;
-                                                    <input name="inputkey" type="text" id="inputkey" size="50">
-                                                    <input name="Submit2" type="button" class="btn_grey" value="确定"
-                                                           onClick="checkbook(form1)">
+                                                    <input name="bookname" type="text" class="noborder" id="bookname" value="">
                                                     <input name="operator" type="hidden" id="operator" value="java1234">
-                                                    <input name="Button" type="button" class="btn_grey" value="完成借阅"
+                                                    <input name="Button" type="submit" class="btn_grey" value="完成借阅"
                                                            onClick="window.location.href='bookBorrow.jsp'">
                                                 </td>
                                             </tr>
@@ -102,18 +95,23 @@
                                                     <table width="99%" border="1" cellpadding="0" cellspacing="0"
                                                            bordercolor="#FFFFFF" bordercolorlight="#FFFFFF"
                                                            bordercolordark="#F6B83B" bgcolor="#FFFFFF">
-                                                        <tr align="center" bgcolor="#F9D16B">
-                                                            <td width="29%" height="25">图书名称</td>
-                                                            <td width="12%">借阅时间</td>
-                                                            <td width="14%">应还时间</td>
-                                                            <td width="17%">出版社</td>
-                                                            <td width="14%">书架</td>
-                                                            <td colspan="2">定价(元)</td>
+                                                        <tr>
+                                                            <td height="32" colspan="3" align="center" bgcolor="#ff7f50"><strong>可借图书</strong>
                                                         </tr>
-
-                                                        <input name="borrowNumber" type="hidden" id="borrowNumber"
-                                                               value="0">
+                                                        <tr align="center" bgcolor="#F9D16B">
+                                                            <td width="33%" height="25">图书名称</td>
+                                                            <td width="33%">出版社</td>
+                                                            <td width="33%">书架</td>
+                                                        </tr>
+                                                        {% for tbw in tbok %}
+                                                             <tr>
+                                                                 <td>{{ tbw.bname }}</td>
+                                                                 <td>{{ tbw.bpublish.hname }}</td>
+                                                                 <td>{{ tbw.bbookrack.brname }}</td>
+                                                             </tr>
+                                                        {% endfor %}
                                                     </table>
+
                                                 </td>
                                             </tr>
 
@@ -122,7 +120,7 @@
 
                                 </tr>
                                 <tr>
-                                    <td height="19" background="Images/main_booksort_2.gif">&nbsp;</td>
+                                    <td height="19" background="/static/main_booksort_2.gif">&nbsp;</td>
                                 </tr>
                             </form>
                         </table>
