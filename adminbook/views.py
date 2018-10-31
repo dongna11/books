@@ -1,6 +1,8 @@
 #coding=utf-8
 import random
+from django.core.paginator import Paginator
 from django.db.models import Count
+from datetime import datetime
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -11,6 +13,7 @@ import time,datetime
 from adminbook.models import *
 from adminbook.models import TRoot
 import jsonpickle
+# from adminbook.models import TRoot
 
 #登陆界面
 def loginbook(request):
@@ -91,6 +94,7 @@ def borrowingbook(request):
             return render(request,'bookBorrow.html',{'treader':treader,'tbok':tbok})
         else:
             return render(request,'bookBorrow.html')
+    return render(request, 'bookBorrow.html')
 #书架设置
 def setupbook(request):
     return render(request,'bookcase.html')
@@ -124,7 +128,7 @@ def filesearchbook(request):
             elif select1 == 'bookcasename':
                 shujiaid = TBookrack.objects.get(brname=submit1).id
                 allbooks = TBook.objects.filter(bbookrack=shujiaid)
-                return render(request,'bookQuery.html',{'allbooks':allbooks})
+                return render(request, 'bookQuery.html', {'allbooks': allbooks})
         except:
             return render(request,'yichang.html')
 
@@ -157,6 +161,9 @@ def typebook(request):
         booktypeid=request.GET.get('ID','')
         TBooktype.objects.get(id=booktypeid).delete()
         return render(request, 'bookType.html', {'booktypes': booktypes})
+    return render(request,'bookType.html',{'booktypes':booktypes})
+
+
 #图书借阅查询
 def libborrow(request,borrows):
     # 开始时间
@@ -173,6 +180,7 @@ def libborrow(request,borrows):
         borrtime = i.bborrowtime
         # print(type(borrtime))
         borrtime1 = datetime.datetime.strftime(borrtime, "%Y-%m-%d %H:%S:%M")
+        borrtime1 = datetime.strftime(borrtime, "%Y-%m-%d %H:%S:%M")
         # print(type(borrtime1))
         # print("borrtime1:%s"%borrtime1)
         borrtime2 = int(borrtime1[:4] + borrtime1[5:7] + borrtime1[8:10])
@@ -180,6 +188,7 @@ def libborrow(request,borrows):
         # 应还时间
         retutime = i.breturntime
         retutime1 = datetime.datetime.strftime(retutime, "%Y-%m-%d %H:%S:%M")
+        retutime1 = datetime.strftime(retutime, "%Y-%m-%d %H:%S:%M")
         retutime2 = int(retutime1[:4] + retutime1[5:7] + retutime1[8:10])
         if borrtime2 > starttime1 and retutime2 < endtime1:
             jieyue.append(i)
@@ -274,13 +283,91 @@ def enquirybook(request):
         except:
             return render(request,'yichang.html')
 
+        try:
+            #两个查询条件
+            if 'a' in checkbox_list and 'b' in checkbox_list:
+                #图书条形码
+                if select1 == 'barcode':
+                    borrows = TBorrow.objects.filter(bname=submit1)
+                    jieyue = libborrow(request,borrows)
+                    return render(request, 'borrowQuery.html',{'jieyue':jieyue})
 
+                #图书名称
+                elif  select1 == 'bookname':
+                    bookid = TBook.objects.filter(bname=submit1)
+                    borrows = []
+                    for bid in bookid:
+                        borrow = TBorrow.objects.filter(bname=bid)
+                        for i in borrow:
+                            borrows.append(i)
+                    jieyue = libborrow(request, borrows)
+
+                    return render(request, 'borrowQuery.html', {'jieyue': jieyue})
+
+                #读者条形码
+                elif select1 == 'readerbarcode':
+                    borrows = TBorrow.objects.filter(breader=submit1)
+                    jieyue = libborrow(request, borrows)
+                    return render(request, 'borrowQuery.html', {'jieyue': jieyue})
+
+                #读者名称
+                elif select1 == 'readername':
+                    readers = TReader.objects.filter(rname=submit1)
+                    borrows = []
+                    for rid in readers:
+                        borrow = TBorrow.objects.filter(breader=rid)
+                        for i in borrow:
+                            borrows.append(i)
+
+                    jieyue = libborrow(request, borrows)
+                    return render(request, 'borrowQuery.html', {'jieyue': jieyue})
+
+            #只有复选框的条件
+            elif 'a' in checkbox_list:
+                # 图书条形码
+                if select1 == 'barcode':
+                    jieyue = TBorrow.objects.filter(bname=submit1)
+                    return render(request, 'borrowQuery.html', {'jieyue': jieyue})
+                #图书名称
+                elif select1 == 'bookname':
+                    bookid = TBook.objects.filter(bname=submit1)
+                    jieyue = []
+                    for bid in bookid:
+                        borrow = TBorrow.objects.filter(bname=bid)
+                        for i in borrow:
+                            jieyue.append(i)
+                    return render(request, 'borrowQuery.html', {'jieyue': jieyue})
+                # 读者条形码
+                elif select1 == 'readerbarcode':
+                    jieyue = TBorrow.objects.filter(breader=submit1)
+                    return render(request, 'borrowQuery.html', {'jieyue': jieyue})
+
+                # 读者名称
+                elif select1 == 'readername':
+                    readers = TReader.objects.filter(rname=submit1)
+                    jieyue = []
+                    for rid in readers:
+                        borrow = TBorrow.objects.filter(breader=rid)
+                        for i in borrow:
+                            jieyue.append(i)
+                    return render(request, 'borrowQuery.html', {'jieyue': jieyue})
+
+            #只有时间查询的条件
+            elif 'b' in checkbox_list:
+                borrows = TBorrow.objects.all()
+                jieyue = libborrow(request, borrows)
+                return render(request, 'borrowQuery.html', {'jieyue': jieyue})
+        except:
+            return render(request,'yichang.html')
 
 #借阅到期提醒
 def reminderbook(request):
     today = datetime.datetime.now()
     # print(type(today))
     today1 = datetime.datetime.strftime(today, "%Y-%m-%d %H:%S:%M")
+    today = datetime.now()
+    # print(type(today))
+    today1 = datetime.strftime(today, "%Y-%m-%d %H:%S:%M")
     today2 = int(today1[:4]+today1[5:7]+today1[8:10])
     print(type(today2))
     print('today2:%s'%today2)
@@ -293,6 +380,7 @@ def reminderbook(request):
         # print(type(returntime))
         # print('returntime:%s'%returntime)
         returntime1 = datetime.datetime.strftime(returntime, "%Y-%m-%d %H:%S:%M")
+        returntime1 = datetime.strftime(returntime, "%Y-%m-%d %H:%S:%M")
         returntime2 = int(returntime1[:4]+returntime1[5:7]+returntime1[8:10])
         print(type(returntime2))
         # print('returntime2:%s'%returntime2)
@@ -362,21 +450,24 @@ def parameterbook(request):
 def changepwdbook(request):
     rootname = request.POST.get('name', '')
     # print(rootname)
+    oldpwd = request.POST.get('oldpwd', '')
     newpwd = request.POST.get('pwd', '')
     checknewpwd = request.POST.get('pwd1', '')
-    # print(rootname,newpwd,checknewpwd)
+    print(rootname,newpwd,checknewpwd)
     tof = TRoot.objects.filter(rname=rootname)
     #print(tof)
+    # print(tof)
+    # print(tof.rpwd)
     oldp = ''
     for i in tof:
         print(i)
         oldp = i.rpwd
-        if oldp == request.POST.get('oldpwd', ''):
+        if oldp == oldpwd:
             if newpwd == checknewpwd:
                 i.rpwd = newpwd
                 i.save()
-    # print(oldp)
-    return render(request, 'pwd_Modify.html', {'oldp': oldp})
+    print(oldp)
+    return render(request, 'pwd_Modify.html',{'oldp':oldp})
 
 
 #读者档案管理

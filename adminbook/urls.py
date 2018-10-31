@@ -13,12 +13,12 @@ urlpatterns = [
     #修改书架
     url(r'^changebookcase/',views.changebookcase),
     url(r'^filesearchs/', views.filesearchbook),
+    url(r'^filesearchs/',views.filesearchbook),
     url(r'^types/', views.typebook),
     url(r'^renewals/', views.renewalbook),
     url(r'^enquirys/', views.enquirybook),
     url(r'^reminders/',views.reminderbook),
     url(r'^librarys/',views.librarybook),
-    url(r'^reminders/',views.reminderbook),
     url(r'^lendingrankings/',views.rankingbook),
     url(r'^administrators/',views.administratorbook),
     url(r'^changepwds/',views.changepwdbook),
