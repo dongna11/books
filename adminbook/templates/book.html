@@ -24,17 +24,19 @@
                     <td width="5%" bgcolor="#F9D16B">删除</td>
                 </tr>
                 {% for book in books %}
-                    <tr>
-                        <td style="padding:5px;">&nbsp;{{ book.id }}</td>
-                        <td style="padding:5px;"><a
-                                href="book.do?action=bookDetail&ID=1">{{ book.bname }}</a></td>
-                        <td style="padding:5px;">&nbsp;{{ book.btype.bttype }}</td>
-                        <td style="padding:5px;">&nbsp;{{ book.bpublish.hname }}</td>
-                        <td style="padding:5px;">&nbsp;{{ book.bbookrack.brname }}</td>
+                    {% if book.bdelete == 0 %}
+                        <tr>
+                            <td style="padding:5px;">&nbsp;{{ book.id }}</td>
+                            <td style="padding:5px;"><a
+                                    href="book.do?action=bookDetail&ID=1">{{ book.bname }}</a></td>
+                            <td style="padding:5px;">&nbsp;{{ book.btype.bttype }}</td>
+                            <td style="padding:5px;">&nbsp;{{ book.bpublish.hname }}</td>
+                            <td style="padding:5px;">&nbsp;{{ book.bbookrack.brname }}</td>
 
-                        <td align="center"><a href="book.do?action=bookModifyQuery&ID=1">修改</a></td>
-                        <td align="center"><a href="book.do?action=bookDel&ID=1">删除</a></td>
-                    </tr>
+                            <td align="center"><a href="/index/changebook/?ID={{ book.id }}">修改</a></td>
+                            <td align="center"><a href="/index/lendingrankings/?action=0&ID={{ book.id }}">删除</a></td>
+                        </tr>
+                    {% endif %}
                 {% endfor %}
 
 

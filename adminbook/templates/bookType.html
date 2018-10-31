@@ -12,8 +12,7 @@
                                         <tr>
                                             <td width="82%">&nbsp;</td>
                                             <td width="18%" align="right">
-                                                <a href="#"
-                                                   onClick="window.open('bookType_add.jsp','','width=292,height=175')">添加图书类型信息</a>
+                                                <a href="/index/addbooktype/">添加图书类型信息</a>
                                             </td>
                                         </tr>
                                     </table>
@@ -29,10 +28,9 @@
                                         <tr>
                                             <td style="padding:5px;">{{ booktype.bttype }}</td>
                                             <td style="padding:5px;">{{ booktype.btday }}</td>
-                                            <td align="center"><a href="#"
-                                                                  onClick="window.open('bookType.do?action=bookTypeModifyQuery&ID=1','','width=292,height=175')">修改</a>
+                                            <td align="center"><a href="/index/changebooktype/?ID={{ booktype.id }}">修改</a>
                                             </td>
-                                            <td align="center"><a href="bookType.do?action=bookTypeDel&ID=1">删除</a></td>
+                                            <td align="center"><a href="/index/types/?action=0&ID={{ booktype.id }}">删除</a></td>
                                         </tr>
                                         {% endfor %}
 

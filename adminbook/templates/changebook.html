@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block main %}
+    <tr>
+        <td height="22" valign="top" class="word_orange">当前位置：读者管理 &gt; 修改图书信息 &gt;&gt;&gt;</td>
+    </tr>
+    <form action="/index/changebook/" method="post">
+         {% csrf_token %}
+         <table width="98%" height="38" border="0" cellpadding="0" cellspacing="0"
+                                               bgcolor="#E3F4F7" class="tableBorder_gray">
+            <tr>
+                <td>书号：</td>
+                <td><input type="text" name="id" id="" value="{{ book.id }}" readonly="true"></td>
+             </tr>
+             <tr>
+                <td>书名：</td>
+                <td><input type="text" name="bname" id="" value="{{ book.bname }}"></td>
+             </tr>
+             <tr>
+                 <td>图书类型：</td>
+                 <td><select name="booktype" id="">
+                        {% for booktype in booktypes %}
+                            {% if booktype.id == book.btype.id %}
+                                <option value="{{ booktype.id }}" selected="selected">{{ booktype.bttype }}</option>
+                            {% else %}
+                                <option value="{{ booktype.id }}">{{ booktype.bttype }}</option>
+                            {% endif %}
+                        {% endfor %}
+                     </select>
+                 </td>
+             </tr>
+             <tr>
+                 <td>书架：</td>
+                 <td><select name="bookrack" id="">
+                        {% for bookrack in bookracks %}
+                            {% if bookrack.id == book.bbookrack.id %}
+                                <option value="{{ bookrack.id }}"selected="selected">{{ bookrack.brname }}</option>
+                            {% else %}
+                                <option value="{{ bookrack.id }}">{{ bookrack.brname }}</option>
+                            {% endif %}
+                        {% endfor %}
+                     </select>
+                 </td>
+             </tr>
+             <tr>
+                 <td>出版社：</td>
+                 <td><input type="text" name="bpublish" id="" value="{{ publish.hname }}"></td>
+
+             </tr>
+             <tr>
+                <td>作者：</td>
+                 <td><input type="text" name="bwriter" id="" value="{{ writer.wname  }}"></td>
+             </tr>
+
+             <tr >
+                <td colspan="2"><input type="submit" value="修改"></td>
+             </tr>
+         </table>
+    </form>
+{% endblock %}
