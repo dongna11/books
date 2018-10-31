@@ -64,6 +64,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'adminbook.my_processor.mainfunc'
             ],
         },
     },
@@ -83,7 +84,7 @@ DATABASES = {
         'PORT': '3306',
         'USER': 'root',
         'PASSWORD': 'Guyifeng531',
-        'OPTIONS':{'isolation_level':None}
+        # 'OPTIONS':{'isolation_level':None}
 
     }
 }

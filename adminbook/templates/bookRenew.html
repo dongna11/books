@@ -12,13 +12,17 @@
                             <tr>
                                 <td height="72" align="center" valign="top" background="Images/main_booksort_1.gif"
                                     bgcolor="#F8BF73">
+
                                     <table width="96%" border="0" cellpadding="1" cellspacing="1" bordercolor="#F8BF73">
+                                        <form name="form1" method="post"
+                                                          action="/index/renewals/">
+                                        {% csrf_token %}
                                         <tr>
                                             <td valign="top" bgcolor="#F8BF73">
+
                                                 <table width="100%" border="0" cellpadding="0" cellspacing="0"
                                                        bgcolor="#FFFFFF">
-                                                    <form name="form1" method="post"
-                                                          action="borrow.do?action=bookrenew">
+
 
                                                         <tr>
                                                             <td>
@@ -30,12 +34,11 @@
                                                                             <img src="Images/reader_checkbg.jpg"
                                                                                  width="142" height="18"></td>
                                                                         <td width="76%" style="padding-top:7px;">读者条形码：
-                                                                            <input name="barcode" type="text"
-                                                                                   id="barcode" value="" size="24">
+                                                                            <input name="reader" type="text"
+                                                                                   id="barcode" value="{{ reader.id }}" size="24">
                                                                             &nbsp;
-                                                                            <input name="Button" type="button"
-                                                                                   class="btn_grey" value="确定"
-                                                                                   onClick="checkreader(form1)"></td>
+                                                                            <input name="Button" type="submit"
+                                                                                   class="btn_grey" value="确定"></td>
                                                                     </tr>
                                                                 </table>
                                                             </td>
@@ -52,24 +55,24 @@
                                                                     <tr>
                                                                         <td height="27">姓&nbsp;&nbsp;&nbsp;&nbsp;名：
                                                                             <input name="readername" type="text"
-                                                                                   id="readername" value=""></td>
+                                                                                   id="readername" value="{{ reader.rname }}"></td>
                                                                         <td>性&nbsp;&nbsp;&nbsp;&nbsp;别：
                                                                             <input name="sex" type="text" id="sex"
-                                                                                   value=""></td>
+                                                                                   value="男"></td>
                                                                         <td>读者类型：
                                                                             <input name="readerType" type="text"
-                                                                                   id="readerType" value=""></td>
+                                                                                   id="readerType" value="{{ reader.rtype.rttype }}"></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td height="27">证件类型：
                                                                             <input name="paperType" type="text"
-                                                                                   id="paperType" value=""></td>
+                                                                                   id="paperType" value="{{ reader.rcardtype }}"></td>
                                                                         <td>证件号码：
                                                                             <input name="paperNo" type="text"
-                                                                                   id="paperNo" value=""></td>
+                                                                                   id="paperNo" value="{{ reader.rcardnum }}"></td>
                                                                         <td>可借数量：
                                                                             <input name="number" type="text" id="number"
-                                                                                   value="0" size="17">
+                                                                                   value="{{ reader.rtype.rtnum }}" size="17">
                                                                             册
                                                                             &nbsp;
                                                                         </td>
@@ -77,7 +80,7 @@
                                                                 </table>
                                                             </td>
                                                         </tr>
-                                                    </form>
+
                                                 </table>
                                             </td>
                                         </tr>
@@ -94,17 +97,30 @@
                                                         <td width="12%" bgcolor="#FFF9D9">书架</td>
                                                         <td bgcolor="#FFF9D9">定价(元)</td>
                                                         <td width="12%" bgcolor="#FFF9D9"><input name="Button22"
-                                                                                                 type="button"
+                                                                                                 type="submit"
                                                                                                  class="btn_grey"
-                                                                                                 value="完成续借"
-                                                                                                 onClick="window.location.href='bookRenew.jsp'">
+                                                                                                 value="完成续借">
                                                         </td>
                                                     </tr>
+                                                        {% for book in bookes %}
+                                                            {% if book.breturn == 0 and book.badd == 0 %}
+                                                                <tr>
+                                                                    <td width="24%" height="25" bgcolor="#FFF9D9">{{ book.bname.bname }}</td>
+                                                                    <td width="12%" bgcolor="#FFF9D9">{{ book.bborrowtime }}</td>
+                                                                    <td width="13%" bgcolor="#FFF9D9">{{ book.breturntime }}</td>
+                                                                    <td width="14%" bgcolor="#FFF9D9">{{ book.bname.bpublish.hname }}</td>
+                                                                    <td width="12%" bgcolor="#FFF9D9">{{ book.bname.bbookrack.brname }}</td>
+                                                                    <td bgcolor="#FFF9D9">50</td>
+                                                                    <td width="12%" bgcolor="#FFF9D9"> <input type="checkbox" name="renew" value="{{ book.id }}">
+                                                                    </td>
+                                                                </tr>
+                                                            {% endif %}
+                                                        {% endfor %}
 
                                                 </table>
                                             </td>
                                         </tr>
-
+                                        </form>
                                     </table>
                                 </td>
                             </tr>
