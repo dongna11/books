@@ -51,6 +51,184 @@ def indexbook(request):
     # print(tbc_count)
     return render(request, 'main.html', {'tbooks': newlist, 'tbc_count': tbc_count})
 
+#图书馆信息
+def librarybook(request):
+    if request.method == 'GET':
+        tlibrary = TLibrary.objects.first()
+        return render(request, 'library_modify.html', {'tlibrary': tlibrary})
+    else:
+        libraryname = request.POST.get('libraryname', '')
+        curator = request.POST.get('curator', '')
+        tel = request.POST.get('tel', '')
+        address = request.POST.get('address', '')
+        email = request.POST.get('email', '')
+        url = request.POST.get('url', '')
+        createDate = request.POST.get('createDate', '')
+        introduce = request.POST.get('introduce', '')
+        tlibrary = TLibrary.objects.first()
+        tlibrary.lname = libraryname
+        tlibrary.lusername = curator
+        tlibrary.ltel = tel
+        tlibrary.lsite = address
+        tlibrary.lemail = email
+        tlibrary.lnet = url
+        tlibrary.lbirthday = createDate
+        tlibrary.lword = introduce
+        tlibrary.save()
+        return HttpResponse('保存成功')
+
+#管理员设置
+def administratorbook(request):
+    return render(request,'manager.html')
+
+#参数设置
+def parameterbook(request):
+    if request.method == 'GET':
+        books = TLibrary.objects.first()
+        return render(request,'parameter_modify.html',{'books':books})
+    else:
+        cost = request.POST.get('cost','')
+        validity = request.POST.get('validity','')
+        tlis = TLibrary.objects.first()
+        tlis.lmoney = cost
+        tlis.ltime = validity
+        tlis.save()
+        return HttpResponse('完成')
+
+# 书架设置
+def setupbook(request):
+    action = request.GET.get('action', '1')
+    if action == '1':
+        bookcase = TBookrack.objects.all()
+        return render(request, 'bookcase.html', {'bookcase': bookcase})
+    if action == '0':
+        id = request.GET.get('ID', '')
+        # print(id)
+        TBookrack.objects.get(id=id).delete()
+        bookcase = TBookrack.objects.all()
+        return render(request, 'bookcase.html', {'bookcase': bookcase})
+
+# 添加书架
+def addbookcase(request):
+    if request.method == "GET":
+        return render(request, 'addbookcase.html')
+    else:
+        brname = request.POST.get('brname', '')
+        TBookrack.objects.create(brname=brname)
+        return HttpResponse('添加成功')
+
+# 修改书架
+def changebookcase(request):
+    if request.method == 'GET':
+        bookcaseid = request.GET.get('ID', '')
+        changebookcase = TBookrack.objects.get(id=bookcaseid)
+        return render(request, 'changebookcase.html', {'changebookcase': changebookcase})
+    else:
+        bid = request.POST.get('id', '')
+        brname = request.POST.get('brname', '')
+
+        bchange = TBookrack.objects.get(id=bid)
+        bchange.brname = brname
+        bchange.save()
+
+        return HttpResponse('修改成功')
+
+
+
+# 读者类型管理
+def typemanagementbook(request):
+    readertypes = TReadertype.objects.all()
+    action = int(request.GET.get('action', '1'))
+    if action == 1:
+        return render(request, 'readerType.html', {'readertypes': readertypes})
+    elif action == 0:
+        readertypeid = int(request.GET.get('ID', ''))
+        TReadertype.objects.get(id=readertypeid).delete()
+        return render(request, 'readerType.html', {'readertypes': readertypes})
+
+# 读者档案管理
+def managementbook(request):
+    readers = TReader.objects.all()
+    action = int(request.GET.get('action', '1'))
+    if action == 1:
+        return render(request, 'reader.html', {'readers': readers})
+    elif action == 0:
+        readerid = request.GET.get('ID', '')
+        a = TReader.objects.get(id=readerid)
+        a.rdelete = 1
+        a.save()
+        return render(request, 'reader.html', {'readers': readers})
+
+
+
+# 图书类型设置
+def typebook(request):
+    booktypes = TBooktype.objects.all()
+    action = int(request.GET.get('action', '1'))
+    if action == 1:
+        return render(request, 'bookType.html', {'booktypes': booktypes})
+    elif action == 0:
+        booktypeid = request.GET.get('ID', '')
+        TBooktype.objects.get(id=booktypeid).delete()
+        return render(request, 'bookType.html', {'booktypes': booktypes})
+
+# 图书档案管理
+def rankingbook(request):
+    books = TBook.objects.all()
+    action = int(request.GET.get('action', '1'))
+    if action == 1:
+        return render(request, 'book.html', {'books': books})
+    elif action == 0:
+        bookid = request.GET.get('ID', '')
+        a = TBook.objects.get(id=bookid)
+        a.bdelete = 1
+        a.save()
+        return render(request, 'book.html', {'books': books})
+
+
+
+# 图书借阅
+def borrowingbook(request):
+    if request.method == 'GET':
+        tbok = TBook.objects.all()
+        barcode = request.POST.get('barcode')
+        return render(request, 'bookBorrow.html', {'tbok': tbok})
+    else:
+        barcode = request.POST.get('barcode')
+        noborder = request.POST.get('noborder')
+        if barcode:
+            tbok = TBook.objects.all()
+            treader = TReader.objects.get(id=barcode)
+            if noborder:
+                cour = connection.cursor()
+                # cour.execute("INSERT INTO `book`.`t_borrow` (breader,bname,bborrowtime,breturntime,brealreturntime,badd,breturn) VALUES (barcode,noborder,NOW(),'2018-11-7','2018-11-11','0','1')")
+                cour.execute(
+                    "INSERT INTO `book`.`t_borrow` VALUES (null,%s,%s,NOW(),DATE_ADD(NOW(),INTERVAL 10 DAY),null ,'1','0')" % (
+                    barcode, noborder))
+                rows = cour.fetchall()
+                return HttpResponse('借阅完成')
+            return render(request, 'bookBorrow.html', {'treader': treader, 'tbok': tbok})
+        else:
+            return render(request, 'bookBorrow.html')
+
+# 图书续借
+def renewalbook(request):
+    if request.method == 'GET':
+        return render(request, 'bookRenew.html')
+    else:
+        renew = request.POST.getlist('renew', '')
+        if renew:
+            for x in renew:
+                # book=TBook.objects.get(id=x)
+                time = TBorrow.objects.get(id=x).breturntime
+                TBorrow.objects.filter(id=x).update(badd=1, breturntime=time + datetime.timedelta(days=30))
+        readerid = request.POST.get('reader', '')
+        readers = TReader.objects.filter(id=readerid)
+        for x in readers:
+            reader = x
+        bookes = TBorrow.objects.filter(breader=reader)
+        return render(request, 'bookRenew.html', {'bookes': bookes, 'reader': reader})
+
 #图书归还
 def returnbook(request):
     if request.method=="GET":
@@ -70,63 +248,7 @@ def returnbook(request):
             reader=a
         bookes=TBorrow.objects.filter(breader=reader.id)
         return render(request,'bookBack.html',{'reader':reader,"bookes":bookes})
-#图书借阅
-def borrowingbook(request):
-    if request.method == 'GET':
-        tbok = TBook.objects.all()
-        barcode = request.POST.get('barcode')
-        return render(request,'bookBorrow.html',{'tbok':tbok})
-    else:
-        barcode = request.POST.get('barcode')
-        noborder = request.POST.get('noborder')
-        if barcode:
-            tbok = TBook.objects.all()
-            treader = TReader.objects.get(id=barcode)
-            if noborder:
-                cour = connection.cursor()
-                # cour.execute("INSERT INTO `book`.`t_borrow` (breader,bname,bborrowtime,breturntime,brealreturntime,badd,breturn) VALUES (barcode,noborder,NOW(),'2018-11-7','2018-11-11','0','1')")
-                cour.execute("INSERT INTO `book`.`t_borrow` VALUES (null,%s,%s,NOW(),'2018-11-7','2018-11-11','0','1')"%(barcode,noborder))
-                rows = cour.fetchall()
-                return HttpResponse('借阅完成')
-            return render(request,'bookBorrow.html',{'treader':treader,'tbok':tbok})
-        else:
-            return render(request,'bookBorrow.html')
-#书架设置
-def setupbook(request):
-    action=request.GET.get('action','1')
-    if action == '1':
-        bookcase = TBookrack.objects.all()
-        return render(request, 'bookcase.html', {'bookcase': bookcase})
-    if action == '0':
-        id = request.GET.get('ID', '')
-        # print(id)
-        TBookrack.objects.get(id=id).delete()
-        bookcase = TBookrack.objects.all()
-        return render(request, 'bookcase.html', {'bookcase': bookcase})
 
-#添加书架
-def addbookcase(request):
-    if request.method=="GET":
-        return render(request,'addbookcase.html')
-    else:
-        brname=request.POST.get('brname','')
-        TBookrack.objects.create(brname=brname)
-        return HttpResponse('添加成功')
-#修改书架
-def changebookcase(request):
-    if request.method=='GET':
-        bookcaseid=request.GET.get('ID','')
-        changebookcase= TBookrack.objects.get(id=bookcaseid)
-        return render(request,'changebookcase.html',{'changebookcase':changebookcase})
-    else:
-        bid = request.POST.get('id','')
-        brname=request.POST.get('brname','')
-
-        bchange = TBookrack.objects.get(id=bid)
-        bchange.brname = brname
-        bchange.save()
-
-        return HttpResponse('修改成功')
 
 
 #图书档案查询
@@ -160,35 +282,6 @@ def filesearchbook(request):
         except:
             return render(request,'yichang.html')
 
-
-#图书续借
-def renewalbook(request):
-    if request.method=='GET':
-        return render(request,'bookRenew.html')
-    else:
-        renew=request.POST.getlist('renew','')
-        if renew:
-            for x in renew:
-                # book=TBook.objects.get(id=x)
-                time=TBorrow.objects.get(id=x).breturntime
-                TBorrow.objects.filter(id=x).update(badd=1,breturntime=time+datetime.timedelta(days=30))
-        readerid=request.POST.get('reader','')
-        readers=TReader.objects.filter(id=readerid)
-        for x in readers:
-            reader=x
-        bookes=TBorrow.objects.filter(breader=reader)
-        return render(request,'bookRenew.html',{'bookes':bookes,'reader':reader})
-
-#图书类型设置
-def typebook(request):
-    booktypes=TBooktype.objects.all()
-    action=int(request.GET.get('action','1'))
-    if action == 1:
-        return render(request,'bookType.html',{'booktypes':booktypes})
-    elif action == 0:
-        booktypeid=request.GET.get('ID','')
-        TBooktype.objects.get(id=booktypeid).delete()
-        return render(request, 'bookType.html', {'booktypes': booktypes})
 #图书借阅查询
 def libborrow(request,borrows):
     # 开始时间
@@ -306,8 +399,6 @@ def enquirybook(request):
         except:
             return render(request,'yichang.html')
 
-
-
 #借阅到期提醒
 def reminderbook(request):
     today = datetime.datetime.now()
@@ -332,64 +423,8 @@ def reminderbook(request):
             daoqi.append(bor)
     # print(daoqi)
     return render(request,'bremind.html',{'daoqi':daoqi,'today':today})
-#图书馆信息
-def librarybook(request):
-    if request.method == 'GET':
-        tlibrary = TLibrary.objects.first()
-        return render(request, 'library_modify.html', {'tlibrary': tlibrary})
-    else:
-        libraryname = request.POST.get('libraryname', '')
-        curator = request.POST.get('curator', '')
-        tel = request.POST.get('tel', '')
-        address = request.POST.get('address', '')
-        email = request.POST.get('email', '')
-        url = request.POST.get('url', '')
-        createDate = request.POST.get('createDate', '')
-        introduce = request.POST.get('introduce', '')
-        tlibrary = TLibrary.objects.first()
-        tlibrary.lname = libraryname
-        tlibrary.lusername = curator
-        tlibrary.ltel = tel
-        tlibrary.lsite = address
-        tlibrary.lemail = email
-        tlibrary.lnet = url
-        tlibrary.lbirthday = createDate
-        tlibrary.lword = introduce
-        tlibrary.save()
-        return HttpResponse('保存成功')
 
 
-#图书档案管理
-def rankingbook(request):
-    books=TBook.objects.all()
-    action = int(request.GET.get('action', '1'))
-    if action==1:
-        return render(request,'book.html',{'books':books})
-    elif action==0:
-        bookid=request.GET.get('ID','')
-        a=TBook.objects.get(id=bookid)
-        a.bdelete=1
-        a.save()
-        return render(request,'book.html',{'books':books})
-
-
-#管理员设置
-def administratorbook(request):
-    return render(request,'manager.html')
-
-#参数设置
-def parameterbook(request):
-    if request.method == 'GET':
-        books = TLibrary.objects.first()
-        return render(request,'parameter_modify.html',{'books':books})
-    else:
-        cost = request.POST.get('cost','')
-        validity = request.POST.get('validity','')
-        tlis = TLibrary.objects.first()
-        tlis.lmoney = cost
-        tlis.ltime = validity
-        tlis.save()
-        return HttpResponse('完成')
 #更改口令
 def changepwdbook(request):
     rootname = request.POST.get('name', '')
@@ -411,31 +446,10 @@ def changepwdbook(request):
     return render(request, 'pwd_Modify.html', {'oldp': oldp})
 
 
-#读者档案管理
-def managementbook(request):
-    readers=TReader.objects.all()
-    action = int(request.GET.get('action', '1'))
-    if action == 1:
-        return render(request,'reader.html',{'readers':readers})
-    elif action == 0:
-        readerid = request.GET.get('ID', '')
-        a=TReader.objects.get(id=readerid)
-        a.rdelete=1
-        a.save()
-        return render(request, 'reader.html', {'readers': readers})
-#读者类型管理
-def typemanagementbook(request):
-    readertypes = TReadertype.objects.all()
-    action=int(request.GET.get('action','1'))
-    if action==1:
-        return render(request,'readerType.html',{'readertypes':readertypes})
-    elif action==0:
-        readertypeid=int(request.GET.get('ID',''))
-        TReadertype.objects.get(id=readertypeid).delete()
-        return render(request,'readerType.html',{'readertypes':readertypes})
 
 
 
+#添加读者信息
 def addreader(request):
     if request.method=='GET':
         readertypes = TReadertype.objects.all()
@@ -452,7 +466,7 @@ def addreader(request):
         sb=TReader.objects.create(rname=rname,rtype=TReadertype.objects.get(rttype=rtype),rcardtype=rcardtype,rcardnum=rcardnum,remail=remail,rtel=rtel,rdelete=0)
         return HttpResponse('注册成功')
 
-
+#添加读者类型
 def addreadertype(request):
     if request.method=='GET':
         return render(request,'addreadertype.html')
@@ -463,7 +477,7 @@ def addreadertype(request):
         sb=TReadertype.objects.create(rttype=rttype,rtnum=rtnum)
         return HttpResponse('添加成功')
 
-
+#修改读者信息
 def changereader(request):
     if request.method=='GET':
         readerid=request.GET.get('ID','')
@@ -484,6 +498,7 @@ def changereader(request):
         sb=TReader.objects.filter(id=readerid).update(rname=rname,rtype=TReadertype.objects.get(rttype=rtype),rcardtype=rcardtype,rcardnum=rcardnum,remail=remail,rtel=rtel,rdelete=0)
         return HttpResponse('修改成功')
 
+#修改读者类型
 def changereadertype(request):
     if request.method=='GET':
         readertypeid=request.GET.get('ID','')
@@ -498,44 +513,8 @@ def changereadertype(request):
         return HttpResponse('修改成功')
 
 
-#书架设置(包括删除)
-def setupbook(request):
-    action=request.GET.get('action','1')
-    if action == '1':
-        bookcase = TBookrack.objects.all()
-        return render(request, 'bookcase.html', {'bookcase': bookcase})
-    if action == '0':
-        id = request.GET.get('ID', '')
-        # print(id)
-        TBookrack.objects.get(id=id).delete()
-        bookcase = TBookrack.objects.all()
-        return render(request, 'bookcase.html', {'bookcase': bookcase})
 
-#添加书架
-def addbookcase(request):
-    if request.method=="GET":
-        return render(request,'addbookcase.html')
-    else:
-        brname=request.POST.get('brname','')
-        TBookrack.objects.create(brname=brname)
-        return HttpResponse('添加成功')
-#修改书架
-def changebookcase(request):
-    if request.method=='GET':
-        bookcaseid=request.GET.get('ID','')
-        changebookcase= TBookrack.objects.get(id=bookcaseid)
-        return render(request,'changebookcase.html',{'changebookcase':changebookcase})
-    else:
-        bid = request.POST.get('id','')
-        brname=request.POST.get('brname','')
-
-        bchange = TBookrack.objects.get(id=bid)
-        bchange.brname = brname
-        bchange.save()
-
-        return HttpResponse('修改成功')
-
-
+#添加图书信息
 def addbook(request):
     if request.method=='GET':
         # bookes=TBook.objects.all()
@@ -561,7 +540,7 @@ def addbook(request):
         TBook.objects.create(bname=bname,btype=TBooktype.objects.get(id=btype),bbookrack=TBookrack.objects.get(id=bbookrack),bborrow=0,bdelete=0,bwriter=writer,bpublish=publish)
         return HttpResponse('添加成功')
 
-
+#修改图书信息
 def changebook(request):
     if request.method=="GET":
         bookid=request.GET.get('ID','')
@@ -593,7 +572,7 @@ def changebook(request):
         sb=TBook.objects.filter(id=id).update(bname=bname,btype=booktype,bwriter=writer,bpublish=publish,bbookrack=bookrack)
         return HttpResponse('修改成功')
 
-
+#添加图书类型
 def addbooktype(request):
     if request.method=="GET":
         return render(request,'addbooktype.html')
@@ -608,7 +587,7 @@ def addbooktype(request):
         type.save()
         return HttpResponse('添加成功')
 
-
+#修改图书类型
 def changebooktype(request):
     if request.method=="GET":
         booktypeid=request.GET.get('ID','')
