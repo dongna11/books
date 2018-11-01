@@ -99,16 +99,20 @@
                                                             <td height="32" colspan="3" align="center" bgcolor="#ff7f50"><strong>可借图书</strong>
                                                         </tr>
                                                         <tr align="center" bgcolor="#F9D16B">
-                                                            <td width="33%" height="25">图书名称</td>
-                                                            <td width="33%">出版社</td>
-                                                            <td width="33%">书架</td>
+                                                            <td width="10%" height="25">编号</td>
+                                                            <td width="30%" height="25">图书名称</td>
+                                                            <td width="30%">出版社</td>
+                                                            <td width="30%">书架</td>
                                                         </tr>
                                                         {% for tbw in tbok %}
+                                                            {% if tbw.bborrow == 0 %}
                                                              <tr>
+                                                                 <td>{{ tbw.id }}</td>
                                                                  <td>{{ tbw.bname }}</td>
                                                                  <td>{{ tbw.bpublish.hname }}</td>
                                                                  <td>{{ tbw.bbookrack.brname }}</td>
                                                              </tr>
+                                                            {% endif %}
                                                         {% endfor %}
                                                     </table>
 
