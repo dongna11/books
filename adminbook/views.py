@@ -1,7 +1,7 @@
 #coding=utf-8
 import random
 from django.db.models import Count
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.db import connection,transaction
@@ -32,6 +32,7 @@ def indexbook(request):
     # 图书借阅表取得书名和借阅次数，并排序
     tbc = TBorrow.objects.values('bname').annotate(c=Count('*')).order_by('-c')[:3]
     # print(tbc)
+    # a
     tbooks = []
     tbc_count = []
     for i in tbc:
@@ -79,7 +80,10 @@ def librarybook(request):
 
 #管理员设置
 def administratorbook(request):
-    return render(request,'manager.html')
+    guanliyuan = TRoot.objects.all()
+    return render(request, 'manager.html', {'guanliyuan': guanliyuan})
+
+    # return render(request,'manager.html')
 
 #参数设置
 def parameterbook(request):
@@ -104,7 +108,11 @@ def setupbook(request):
     if action == '0':
         id = request.GET.get('ID', '')
         # print(id)
-        TBookrack.objects.get(id=id).delete()
+        try:
+            TBookrack.objects.get(id=id).delete()
+        except:
+            bookcase = TBookrack.objects.all()
+            return render(request, 'bookcase.html', {'bookcase': bookcase})
         bookcase = TBookrack.objects.all()
         return render(request, 'bookcase.html', {'bookcase': bookcase})
 
@@ -114,8 +122,12 @@ def addbookcase(request):
         return render(request, 'addbookcase.html')
     else:
         brname = request.POST.get('brname', '')
+        rackes=TBookrack.objects.all()
+        for x in rackes:
+            if x.brname==brname:
+                return HttpResponseRedirect('/index/setups/')
         TBookrack.objects.create(brname=brname)
-        return HttpResponse('添加成功')
+        return HttpResponseRedirect('/index/setups/')
 
 # 修改书架
 def changebookcase(request):
@@ -126,12 +138,15 @@ def changebookcase(request):
     else:
         bid = request.POST.get('id', '')
         brname = request.POST.get('brname', '')
-
+        racks=TBookrack.objects.all()
+        for x in racks:
+            if x.brname==brname:
+                return HttpResponseRedirect('/index/setups/')
         bchange = TBookrack.objects.get(id=bid)
         bchange.brname = brname
         bchange.save()
 
-        return HttpResponse('修改成功')
+        return HttpResponseRedirect('/index/setups/')
 
 
 
@@ -143,7 +158,10 @@ def typemanagementbook(request):
         return render(request, 'readerType.html', {'readertypes': readertypes})
     elif action == 0:
         readertypeid = int(request.GET.get('ID', ''))
-        TReadertype.objects.get(id=readertypeid).delete()
+        try:
+            TReadertype.objects.get(id=readertypeid).delete()
+        except:
+            return render(request, 'readerType.html', {'readertypes': readertypes})
         return render(request, 'readerType.html', {'readertypes': readertypes})
 
 # 读者档案管理
@@ -155,6 +173,9 @@ def managementbook(request):
     elif action == 0:
         readerid = request.GET.get('ID', '')
         a = TReader.objects.get(id=readerid)
+        b=TBorrow.objects.filter(breader=readerid,breturn=0)
+        if b:
+            return render(request, 'reader.html', {'readers': readers})
         a.rdelete = 1
         a.save()
         return render(request, 'reader.html', {'readers': readers})
@@ -169,7 +190,10 @@ def typebook(request):
         return render(request, 'bookType.html', {'booktypes': booktypes})
     elif action == 0:
         booktypeid = request.GET.get('ID', '')
-        TBooktype.objects.get(id=booktypeid).delete()
+        try:
+            TBooktype.objects.get(id=booktypeid).delete()
+        except:
+            return render(request, 'bookType.html', {'booktypes': booktypes})
         return render(request, 'bookType.html', {'booktypes': booktypes})
 
 # 图书档案管理
@@ -181,6 +205,9 @@ def rankingbook(request):
     elif action == 0:
         bookid = request.GET.get('ID', '')
         a = TBook.objects.get(id=bookid)
+        b=TBorrow.objects.filter(bname=bookid,breturn=0)
+        if b:
+            return render(request, 'book.html', {'books': books})
         a.bdelete = 1
         a.save()
         return render(request, 'book.html', {'books': books})
@@ -196,17 +223,19 @@ def borrowingbook(request):
     else:
         barcode = request.POST.get('barcode')
         noborder = request.POST.get('noborder')
+        # print(barcode)
         if barcode:
             tbok = TBook.objects.all()
             treader = TReader.objects.get(id=barcode)
             if noborder:
+                TBook.objects.filter(id=noborder).update(bborrow=1)
                 cour = connection.cursor()
                 # cour.execute("INSERT INTO `book`.`t_borrow` (breader,bname,bborrowtime,breturntime,brealreturntime,badd,breturn) VALUES (barcode,noborder,NOW(),'2018-11-7','2018-11-11','0','1')")
                 cour.execute(
-                    "INSERT INTO `book`.`t_borrow` VALUES (null,%s,%s,NOW(),DATE_ADD(NOW(),INTERVAL 10 DAY),null ,'1','0')" % (
+                    "INSERT INTO `book`.`t_borrow` VALUES (null,%s,%s,NOW(),DATE_ADD(NOW(),INTERVAL 10 DAY),null ,'0','0')" % (
                     barcode, noborder))
                 rows = cour.fetchall()
-                return HttpResponse('借阅完成')
+                return HttpResponseRedirect('/index/borrowings/')
             return render(request, 'bookBorrow.html', {'treader': treader, 'tbok': tbok})
         else:
             return render(request, 'bookBorrow.html')
@@ -464,7 +493,7 @@ def addreader(request):
         rtypename=TReadertype.objects.get(rttype=rtype).id
         # print(rname,rtype,rcardtype,rcardnum,rtel,remail)
         sb=TReader.objects.create(rname=rname,rtype=TReadertype.objects.get(rttype=rtype),rcardtype=rcardtype,rcardnum=rcardnum,remail=remail,rtel=rtel,rdelete=0)
-        return HttpResponse('注册成功')
+        return HttpResponseRedirect('/index/managements/')
 
 #添加读者类型
 def addreadertype(request):
@@ -475,7 +504,7 @@ def addreadertype(request):
         rtnum=request.POST.get('rtnum','')
         # print(rttype+rtnum)
         sb=TReadertype.objects.create(rttype=rttype,rtnum=rtnum)
-        return HttpResponse('添加成功')
+        return HttpResponseRedirect('/index/typemanagements/')
 
 #修改读者信息
 def changereader(request):
@@ -496,7 +525,7 @@ def changereader(request):
         rtypename=TReadertype.objects.get(rttype=rtype).id
         # print(rname,rtype,rcardtype,rcardnum,rtel,remail)
         sb=TReader.objects.filter(id=readerid).update(rname=rname,rtype=TReadertype.objects.get(rttype=rtype),rcardtype=rcardtype,rcardnum=rcardnum,remail=remail,rtel=rtel,rdelete=0)
-        return HttpResponse('修改成功')
+        return HttpResponseRedirect('/index/managements/')
 
 #修改读者类型
 def changereadertype(request):
@@ -510,7 +539,7 @@ def changereadertype(request):
         rtnum = request.POST.get('rtnum', '')
         # print(rttype+rtnum)
         sb = TReadertype.objects.filter(id=rtid).update(rttype=rttype, rtnum=rtnum)
-        return HttpResponse('修改成功')
+        return HttpResponseRedirect('/index/typemanagements/')
 
 
 
@@ -538,7 +567,7 @@ def addbook(request):
         except TWriter.DoesNotExist:
             writer = TWriter.objects.create(wname=bwriter)
         TBook.objects.create(bname=bname,btype=TBooktype.objects.get(id=btype),bbookrack=TBookrack.objects.get(id=bbookrack),bborrow=0,bdelete=0,bwriter=writer,bpublish=publish)
-        return HttpResponse('添加成功')
+        return HttpResponseRedirect('/index/filesearchs/')
 
 #修改图书信息
 def changebook(request):
@@ -570,7 +599,7 @@ def changebook(request):
         except TWriter.DoesNotExist:
             writer = TWriter.objects.create(wname=bwriter)
         sb=TBook.objects.filter(id=id).update(bname=bname,btype=booktype,bwriter=writer,bpublish=publish,bbookrack=bookrack)
-        return HttpResponse('修改成功')
+        return HttpResponseRedirect('/index/filesearchs/')
 
 #添加图书类型
 def addbooktype(request):
@@ -585,7 +614,7 @@ def addbooktype(request):
             type = TBooktype.objects.create(bttype=bttype,btday=btnum)
         type.btday=btnum
         type.save()
-        return HttpResponse('添加成功')
+        return HttpResponseRedirect('/index/types/')
 
 #修改图书类型
 def changebooktype(request):
@@ -597,5 +626,11 @@ def changebooktype(request):
         id=request.POST.get('id','')
         bttype=request.POST.get('bttype','')
         btday=request.POST.get('btday','')
+        types=TBooktype.objects.all()
+        for x in types:
+            if x.bttype==bttype:
+                return HttpResponseRedirect('/index/types/')
         sb=TBooktype.objects.filter(id=id).update(bttype=bttype,btday=btday)
-        return HttpResponse('修改成功')
+        # typemanagementbook()
+        # return render(request,'')
+        return HttpResponseRedirect('/index/types/')
